@@ -1,14 +1,31 @@
 var express = require('express');
+var mongojs = require('mongojs');
+
 var router = express.Router();
+//var db=mongojs('mongodb://sa:qazwsxedc@127.0.0.1:27017','D2D.collection');
 
-router.get("/", function (req, res) {
-    var data = '{"type": "watch" ,"data": [' +
-        '{ "title":"moscone" , "imageName":"moscone.jpg" ,"prize":"665" },' +
-        '{ "title":"fossil" , "imageName":"fossil.jpg" ,"prize":"885"},' +
-        '{ "title":"tissot" , "imageName":"tissot.jpg" ,"prize":"985"} ]}';
+var db = mongojs('D2D', ["item"]);
 
-    var obj = JSON.parse(data);
-    res.json(obj);
+/*
+ * ................Json Format in mongoDB...............
+ {
+        "_id" : ObjectId("5c44add048cf42a2a898206d"),
+        "type" : "watch",
+        "title" : "tissot",
+        "imageName" : "tissot.jpg",
+        "prize" : "985",
+        "description" : "description"
+}
+ */
+// to do implement one router for same json response
+router.get("/", function (req, res, next) {
+    var obj
+    db.item.find(function (err, items) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(items);
+    });
 });
 
 module.exports = router;
