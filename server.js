@@ -5,9 +5,8 @@ var url = require('url');
 
 //Router Path
 var index = require('./routes/index');
-var perfume = require('./routes/perfume');
-var watch = require('./routes/watch');
-var itemDetails = require('./routes/item-details')
+var itemDetails = require('./routes/item-details');
+var api=require('./routes/api');
 //set port
 var port = 3000;
 
@@ -25,9 +24,8 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 //api url handling
 app.use('/', index);
-app.use('/perfume', perfume);
-app.use('/watch', watch);
 app.use('/details', itemDetails);
+app.use('/api', api);
 app.use('/assets', express.static('assets'))
 
 app.listen(port, function () {
