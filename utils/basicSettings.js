@@ -1,5 +1,11 @@
-var dressPath = "../assets/images/dresses/";
-var watchPath = "../assets/images/watch/";
-var perfumePath = "../assets/images/perfume/";
+const {
+    port = 3000,
+    dressImagePath = dressPath,
+    watchImagePath = watchPath,
+    perfumeImagePath = perfumePath
+} = process.env;
+const dressImagePath = "../assets/images/dresses/";
+const watchPath = "../assets/images/watch/";
+const perfumePath = "../assets/images/perfume/";
 
 

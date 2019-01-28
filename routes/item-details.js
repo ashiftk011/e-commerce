@@ -11,6 +11,7 @@ router.get('/:id', function (req, res, nex) {
         }
         else {
             var data = item.find(id => id._id == req.params.id);
+            id = req.params.id;
             imagePath = "";
             if (data.type == "perfume") {
                 imagePath = "../assets/images/perfume/" + data.imageName;
@@ -27,8 +28,11 @@ router.get('/:id', function (req, res, nex) {
 
 });
 
-router.post('/', function (req, res) {
-    alert(req.body());
+router.post('/', function (req, res, next) {
+});
+
+router.post('/add-to-cart', function (req, res, next) {
+    console.log(req.sessionID);
 });
 
 module.exports = router;
