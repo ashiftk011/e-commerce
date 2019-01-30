@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
 
-var db = mongojs('D2D', ["item"]);
+var db = mongojs('D2D', ["item,orderDetails"]);
 
 router.get('/:id', function (req, res, nex) {
     db.item.find({}, function (err, item) {
@@ -11,6 +11,7 @@ router.get('/:id', function (req, res, nex) {
         }
         else {
             var data = item.find(id => id._id == req.params.id);
+            id = req.params.id;
             imagePath = "";
             if (data.type == "perfume") {
                 imagePath = "../assets/images/perfume/" + data.imageName;
@@ -27,8 +28,27 @@ router.get('/:id', function (req, res, nex) {
 
 });
 
-router.post('/', function (req, res) {
-    alert(req.body());
+router.post('/order', function (req, res, next) {
+    var type = req.body["type"];
+
+    if(req.body["userName"]){
+        
+    }
+
+    db.orderDetails.insert({
+        userName: req.body["userName"],
+        mobile: req.body["mobile"],
+        email: req.body["email"],
+        address: req.body["address"],
+        post_code: req.body["post-code"],
+        itemsId: [{
+            id: req.body["id"]
+        }]
+    });
+    //res.redirect("/items/" + type);
 });
+
+
+
 
 module.exports = router;
