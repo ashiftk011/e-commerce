@@ -5,20 +5,30 @@ var mongojs = require('mongojs');
 var db = mongojs('D2D', ["item"]);
 
 router.get('/login', function(req,res,next){
-    res.render('login.html',{error :null, username : "", password : ""});
+    res.render('admin/login.html',{error :null, username : "", password : ""});
+});
+
+var isAuthenticated = false;
+
+router.get('/logout', function(req,res,next){
+    isAuthenticated = false;
+    console.log(':: logout - authToken :'+isAuthenticated+' ::');
+    res.render('admin/login.html',{error :null, username : "", password : ""});
 });
 
 router.post('/verifylogin', function(req,res,next){
-    if('admin' == req.body.username && 'test1234' == req.body.password)
-        res.render('dashboard.html');
-    else{
+    if('admin' == req.body.username && 'test1234' == req.body.password){
+        isAuthenticated = true;
+        console.log(':: verifylogin - authToken :'+isAuthenticated+' ::');
+        res.render('admin/dashboard.html');
+    }else{
         var errorCode = null;
         if('admin' != req.body.username)
             errorCode = "Invalid User Name";
         else
             errorCode = "Invalid Password";
 
-        res.render('login.html',{username : req.body.username,
+        res.render('admin/login.html',{username : req.body.username,
             password : req.body.password,
             error    : errorCode
         });

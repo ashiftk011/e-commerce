@@ -7,32 +7,42 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="/details">
-            <div class="modal-body">
-                <table>
-                    <tr>
-                        <td>Name</td>
-                        <td><input type="text" name="userName" id="name"></td>
-                    </tr>
-                    <tr>
-                        <td>Mobile</td>
-                        <td><input type="number" name="mobile" id="mobile"></td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td><input type="text" name="email" id="email"> </td>
-                    </tr>
-                    <tr>
-                        <td>Adress</td>
-                        <td><input type="text" name="address"></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary" type="submit" value="submit">Order</button>
-            </div>
-        </form>
+            <form method="POST" action="/details/order">
+                <input type="hidden" name="id" value="<%= id %>">
+                <input type="hidden" name="type" value="<%= type %>">
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" name="userName" id="name"></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile</td>
+                            <td><input type="number" name="mobile" id="mobile"></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input type="text" name="email" id="email"> </td>
+                        </tr>
+                        <tr>
+                            <td>Adress</td>
+                            <td><input type="text" name="address"></td>
+                        </tr>
+                        <tr>
+                            <td>Post</td>
+                            <td><input type="text" name="post-code"></td>
+                        </tr>
+                        <tr>
+                            <td>Pin Code</td>
+                            <td><input type="text" name="pin"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit" value="submit">Order</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
