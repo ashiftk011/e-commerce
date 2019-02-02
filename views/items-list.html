@@ -10,12 +10,15 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../assets/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/minstyle.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
 
     <% include common/main.html%>
+
     <div id="category" class="bg-1">
         <div class="container text-center">
             <div class="row">
@@ -55,7 +58,48 @@
             </div>
         </div>
     </div>
-    <div class='row'>
+
+    <div class="container">
+        <div class="row">
+            <% data.forEach(function(item){ %>
+            <div class="col-xs-4">
+                <div class="product-grid">
+                    <div class="product-image">
+                        <a href="/details/<%= item._id %>">
+                            <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
+                            <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
+                        </a>
+
+                        <ul class="social">
+                            <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
+                            <li><a href="" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                            <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                        <span class="product-new-label">Sale</span>
+                        <span class="product-discount-label">20%</span>
+                    </div>
+                    <ul class="rating">
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star disable"></li>
+                    </ul>
+                    <div class="product-content">
+                        <h3 class="title"><a href="#">
+                                <%= item.title  %></a></h3>
+                        <div class="price">
+                            <%= item.prize  %>
+                            <span>$20.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% });%>
+        </div>
+    </div>
+
+    <!-- <div class='row'>
         <% data.forEach(function(item){ %>
         <div class='col-sm-4'>
             <div class='thumbnail'>
@@ -72,7 +116,7 @@
             </div>
         </div>
         <% });%>
-    </div>
+    </div> -->
 </body>
 
 </html>
