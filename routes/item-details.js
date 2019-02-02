@@ -1,28 +1,26 @@
 var express = require('express');
 var router = express.Router();
-var mongojs = require('mongojs');
 
-var db = mongojs('D2D', ["item,orderDetails"]);
+var product = require('../model/product');
 
 router.get('/:id', function (req, res, nex) {
-    db.item.find({}, function (err, item) {
+    id = req.params.id;
+    product.findById(id, function (err, item) {
         if (err) {
             console.log("error");
         }
         else {
-            var data = item.find(id => id._id == req.params.id);
-            id = req.params.id;
             imagePath = "";
-            if (data.type == "perfume") {
-                imagePath = "../assets/images/perfume/" + data.imageName;
+            if (item.type == "perfume") {
+                imagePath = "../assets/images/perfume/" + item.imageName;
             }
-            else if (data.type == "watch") {
-                imagePath = "../assets/images/watch/" + data.imageName;
+            else if (item.type == "watch") {
+                imagePath = "../assets/images/watch/" + item.imageName;
             }
-            else if (data.type == "dress") {
-                imagePath = "../assets/images/dresses/" + data.imageName;
+            else if (item.type == "dress") {
+                imagePath = "../assets/images/dresses/" + item.imageName;
             }
-            res.render('item-details.html', { title: data.title, type: data.type, imageName: data.imageName, prize: data.prize, description: data.description });
+            res.render('item-details.html', { title: item.title, type: item.type, imageName: item.imageName, prize: item.prize, description: item.description });
         }
     })
 
@@ -31,8 +29,8 @@ router.get('/:id', function (req, res, nex) {
 router.post('/order', function (req, res, next) {
     var type = req.body["type"];
 
-    if(req.body["userName"]){
-        
+    if (req.body["userName"]) {
+
     }
 
     db.orderDetails.insert({

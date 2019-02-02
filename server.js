@@ -2,14 +2,11 @@ var express = require('express');
 var path = require('path');
 var bodyparser = require('body-parser');
 var session = require("express-session");
-var url = require('url');
 var cookieParser = require('cookie-parser');
 var mongoose = require("mongoose");
 
-var mongojs = require('mongojs');
-var db = mongojs('D2D', ["item"]);
 
-
+var product = require('./model/product');
 
 //Router Path
 var itemDetails = require('./routes/item-details');
@@ -37,7 +34,6 @@ app.use('/assets', express.static('assets'));
 app.use('/utils', express.static('utils'));
 
 //api url handling
-//app.use('/', index);
 app.use('/details', itemDetails);
 app.use('/items', itemList);
 app.use('/admin', admin);
@@ -81,7 +77,6 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
     }
     req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
-
     res.redirect("/items/" + type);
 });
 
@@ -89,36 +84,28 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
 
 app.get("/cart", function (req, res, next) {
     var cartItemsList = [];
-    var data = [];
+    var sessionItems = [];
     if (req.session.items) {
         cartItemsList = req.session.items;
-        db.item.find({}, function (err, item) {
-            if (err) {
-                console.log("error");
-            }
-            else {
-
-                cartItemsList.forEach(element => {
-                    var imagePath = '';
-                    var itemDetails = item.find(id => id._id == element)
-                    if (itemDetails.type == "perfume") {
-                        imagePath = "../assets/images/perfume/";
-                    }
-                    else if (itemDetails.type == "watch") {
-                        imagePath = "../assets/images/watch/";
-                    }
-                    else if (itemDetails.type == "dress") {
-                        imagePath = "../assets/images/dresses/";
-                    }
-                    itemDetails.imagePath = imagePath + itemDetails.imageName;
-                    data.push(itemDetails);
-                });
-                res.render('cart.html', { data });
-            }
-        })
+        var itemSetcount = 0;
+        cartItemsList.forEach(element => {
+            product.findById(element, function (error, itemDetails) {
+                if (error) {
+                    console.log("error");
+                }
+                else {
+                    sessionItems.push(itemDetails);
+                    itemSetcount++;
+                    if (req.session.items.length == itemSetcount)
+                        res.render('cart.html', { data: sessionItems });
+                }
+            });
+        });
     }
-
-})
+    if (!req.session.items || req.session.items.length == 0) {
+        res.render('cart.html', { data: null });
+    }
+});
 
 app.get("/cart/remove/:id", function (req, res, next) {
     req.session.items = req.session.items.filter(item => item != req.params.id);

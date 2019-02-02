@@ -2,16 +2,13 @@ var express = require('express');
 var multer = require('multer');
 var moongoose = require('mongoose');
 var product = require('../model/product');
+
 var router = express.Router();
-//var mongojs = require('mongojs');
-
-
 
 var mongodb = moongoose.connection;
 mongodb.once("open",function(){
     console.log(':: connected :::');
 });
-//var db = mongojs('D2D', ["item"]);
 
 router.get('/login', function (req, res, next) {
     res.render('admin/login.html', { error: null, username: "", password: "" });

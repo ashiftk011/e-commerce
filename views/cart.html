@@ -11,7 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../assets/styles/cartStyle.css">
-    <link rel="stylesheet" type="text/css" href="../assets/styles/Style.css"> 
+    <link rel="stylesheet" type="text/css" href="../assets/styles/Style.css">
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
@@ -49,7 +49,11 @@
                         </div>
                     </td>
                     <td data-th="Price">
+                        <% if(!item.offerPrice){ %>
                         <%= item.prize  %>
+                        <% } else {%>
+                        <%= item.offerPrice %>
+                        <% }%>
                     </td>
                     <td data-th="Quantity">
                         <input type="number" class="form-control text-center" value="1">
