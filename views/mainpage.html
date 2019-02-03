@@ -2,148 +2,197 @@
 <html lang="en">
 
 <head>
-    <title>D2D</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../assets/styles/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>D2D</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="../assets/css/mdb.min.css" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="../assets/css/style.min.css" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+      margin-bottom: 50px;
+    }
+    @media (max-width: 740px) {
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+  </style>
 </head>
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<body class="grey lighten-3">
 
     <% include common/main.html%>
 
 
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div id="carousel-example-1z" class="carousel slide carousel-fade pt-4" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-1z" data-slide-to="1"></li>
+            <li data-target="#carousel-example-1z" data-slide-to="2"></li>
         </ol>
 
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <img src="../assets/images/carousal_perfume.jpeg" alt="Perfume">
-                <div class="carousel-caption">
-                    <h3>Perfumes</h3>
-                    <p>The atmosphere in New York is lorem ipsum.</p>
-                </div>
+            <div class="carousel-item active">
+                <div class="view" style="background-image: url('../assets/images/carousal_perfume.jpeg'); background-repeat: no-repeat; background-size: cover;">
+                    <div class="carousel-caption">
+                        <div class="text-center white-text mx-5 wow fadeIn">
+                            <h3 class="mb-4">
+                                <strong>Perfumes</strong>
+                            </h3>
+                        </div>
+                            <p>The atmosphere in New York is lorem ipsum.</p>
+                        </div>
+                  </div>
             </div>
 
-            <div class="item">
-                <img src="../assets/images/carousal_watch.jpeg" alt="Watches">
-                <div class="carousel-caption">
-                    <h3>Watches</h3>
-                    <p>Thank you, Chicago - A night we won't forget.</p>
-                </div>
+            <div class="carousel-item">
+                <div class="view" style="background-image: url('../assets/images/carousal_watch.jpeg'); background-repeat: no-repeat; background-size: cover;">
+
+                    <!-- Mask & flexbox options-->
+                    <div class="mask rgba-black-strong d-flex justify-content-center align-items-center">
+          
+                      <!-- Content -->
+                      <div class="text-center white-text mx-5 wow fadeIn">
+                        <h1 class="mb-4">
+                          <strong>Watches</strong>
+                        </h1>
+                        <a target="_blank" href="#" class="btn btn-outline-white btn-lg">Explore
+                          <i class="fas fa-graduation-cap ml-2"></i>
+                        </a>
+                      </div>
+                      <!-- Content -->
+          
+                    </div>
+                    <!-- Mask & flexbox options-->
+          
+                  </div>
             </div>
 
-            <div class="item">
-                <img src="../assets/images/carousal_dress.jpg" alt="Dresses">
-                <div class="carousel-caption">
-                    <h3>Dresses</h3>
-                    <p>Even though the traffic was a mess, we had the best time.</p>
-                </div>
+            <div class="carousel-item">
+                
+                <div class="view" style="background-image: url('../assets/images/carousal_dress.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+                    <!-- Mask & flexbox options-->
+                    <div class="mask rgba-black-strong d-flex justify-content-center align-items-center">
+          
+                      <!-- Content -->
+                      <div class="text-center white-text mx-5 wow fadeIn">
+                        <h1 class="mb-4">
+                          <strong>Dresses</strong>
+                        </h1>
+                        <a target="_blank" href="#" class="btn btn-outline-white btn-lg">Explore
+                          <i class="fas fa-graduation-cap ml-2"></i>
+                        </a>
+                      </div>
+                      <!-- Content -->
+          
+                    </div>
+                    <!-- Mask & flexbox options-->
+          
+                  </div>
             </div>
         </div>
 
         <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
-        </a>
+          </a>
     </div>
-    <div id="category" class="bg-1">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/perfume">
-                            <img src="../assets/images/perfume.jpeg" alt="Perfumes">
-                            <br>
-                            <p>
-                                <strong>Perfumes</strong>
-                            </p>
-                        </a>
+    <main>
+        <div class="container">
+            <section class="text-center mb-3">
+                <div class="row wow fadeIn">
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card">
+                            <div class="view overlay">
+                                <img src="../assets/images/perfume.jpeg" class="card-img-top" alt="">
+                                <a href="/items/perfume">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+                            <div class="card-body text-center">
+                                <h5>
+                                    <strong>
+                                        <a href="/items/perfume" class="dark-grey-text">Perfume
+                                        </a>
+                                    </strong>
+                                </h5>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-lg-4 col-md-6 mb-3">
+                            <div class="card">
+                                <div class="view overlay">
+                                    <img src="../assets/images/watch.jpeg" class="card-img-top" alt="">
+                                    <a href="/items/watch"> 
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5>
+                                        <strong>
+                                            <a href="/items/watch" class="dark-grey-text">Watch
+                                            </a>
+                                        </strong>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="view overlay">
+                                        <img src="../assets/images/dress.jpeg" class="card-img-top" alt="">
+                                        <a href="/items/dress">
+                                            <div class="mask rgba-white-slight"></div>
+                                        </a>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h5>
+                                            <strong>
+                                                <a href="/items/dress" class="dark-grey-text">Clothings
+                                                </a>
+                                            </strong>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/watch">
-                            <img src="../assets/images/watch.jpeg" alt="Watches">
-                            <br>
-                            <p>
-                                <strong>Watches</strong>
-                            </p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/dress">
-                            <img src="../assets/images/dress.jpeg" alt="Dresses">
-                            <br>
-                            <p>
-                                <strong>Dresses</strong>
-                            </p>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
-    </div>
-    <div>
-
-    </div>
-
-    <div id="contact" class="container">
-        <h3 class="text-center">Contact</h3>
-        <p class="text-center">
-            <em>We love our fans!</em>
-        </p>
-        <div class="row test">
-            <div class="col-md-4">
-                <p>Fan? Drop a note.</p>
-                <p>
-                    <span class="glyphicon glyphicon-map-marker"></span>Chicago, US</p>
-                <p>
-                    <span class="glyphicon glyphicon-phone"></span>Phone: +00 1515151515</p>
-                <p>
-                    <span class="glyphicon glyphicon-envelope"></span>Email: d2d@gmail.com</p>
-            </div>
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-sm-6 form-group">
-                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
-                    </div>
-                </div>
-                <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <button class="btn pull-right" type="submit">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- <script type="text/javascript" src="../assets/jquery.min.js"></script>
-    <script type="text/javascript" src="../assets/ajax.js"></script>
-    <script type="text/javascript" src="../assets/javascript/javascript.js"></script> -->
-
+    </main>
 </body>
 
 <% include common/footer.html%>
