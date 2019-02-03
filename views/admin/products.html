@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../assets/styles/login.css">
+</head>
+<body>
+    <div class="wrapper">
+        <% include ../common/admin/leftmenu.html %>
+        <div id="content">
+            <h2>Products</h2>
+            <hr><br>
+            <h4>Dresses</h4>
+            <div class='row'>
+                <% products.forEach(function(product){ 
+                    if(product.type=='dress'){%>
+                    <div class='col-sm-4'>
+                        <div class='thumbnail'>
+                            <img src="../assets/images/dresses/<%= product.imageName %>" ><br>
+                            <p>
+                                <strong>
+                                    <%= product.title  %> </strong><br>
+                                <strong>
+                                    <%= product.prize  %> </strong>
+                            </p>
+                            <div class="clearfix"></div>
+                            <a class="btn btn-success pull-right" href='/admin/edit/<%= product._id %>'>Edit</a>
+                        </div>
+                    </div>
+                    <%}
+                });%>
+            </div>
+            <h4>Watches</h4>
+            <div class='row'>
+                <% products.forEach(function(product){ 
+                    if(product.type=='watch'){%>
+                    <div class='col-sm-4'>
+                        <div class='thumbnail'>
+                            <img src="../assets/images/watch/<%= product.imageName %>"><br>
+                            <p>
+                                <strong>
+                                    <%= product.title  %> </strong><br>
+                                <strong>
+                                    <%= product.prize  %> </strong>
+                            </p>
+                            <a class="btn btn-success pull-right" href='/admin/edit/<%= product._id %>'>Edit</a>
+                        </div>
+                    </div>
+                    <%}
+                });%>
+            </div>
+            <h4>Watches</h4>
+                <div class='row'>
+                    <% products.forEach(function(product){ 
+                        if(product.type=='perfume'){%>
+                        <div class='col-sm-4'>
+                            <div class='thumbnail'>
+                                <img src="../assets/images/perfume/<%= product.imageName %>"><br>
+                                <p>
+                                    <strong>
+                                        <%= product.title  %> </strong><br>
+                                    <strong>
+                                        <%= product.prize  %> </strong>
+                                </p>
+                                <a class="btn btn-success pull-right" href='/admin/edit/<%= product._id %>'>Edit</a>
+                            </div>
+                        </div>
+                    <%}
+                });%>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#sidebar').find('ul li').each(function(){
+            if($(this).attr('id') == 'items')
+                $(this).addClass('active');
+        });
+    });
+</script>
+</html>

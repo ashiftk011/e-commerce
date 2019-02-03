@@ -1,12 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var mongojs = require('mongojs');
-
-var db = mongojs('D2D', ["item"]);
+var product = require('../model/product');
 
 router.get("/:type", function (req, res, next) {
     var itemType = req.params.type;
-    db.item.find({ "type": req.params.type }, function (err, items, next) {
+    product.find({ "type": req.params.type }, function (err, items, next) {
         if (err) {
             res.send(err);
         }

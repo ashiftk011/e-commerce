@@ -5,40 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
     </head>
     <body>
             <div class="wrapper">
-                    <nav id="sidebar">
-                        <div class="sidebar-header">
-                            <h3>ADMIN</h3>
-                        </div>
-                        <ul class="list-unstyled components">
-                            <li class="active">
-                                <a href="#">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="#">All Products</a>
-                            </li>
-                            <li>
-                                <a href="#">Add Product</a>
-                            </li>
-                            <li>
-                                <a href="#">Edit Product</a>
-                            </li>
-                            <li>
-                                <a href="#">Orders</a>
-                            </li>
-                            <li>
-                                <a href="#">Messages</a>
-                            </li>
-                        </ul>
-        
-                        <ul class="list-unstyled CTAs">
-                            <li><a href="#" class="logout">Logout</a></li>
-                        </ul>
-                    </nav>
+                <% include ../common/admin/leftmenu.html %>
         
                     <!-- Page Content Holder -->
                     <div id="content">
@@ -60,4 +33,12 @@
                     </div>
                 </div>
     </body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#sidebar').find('ul li').each(function(){
+                if($(this).attr('id') == 'dashboard')
+                    $(this).addClass('active');
+            });
+        });
+    </script>
 </html>

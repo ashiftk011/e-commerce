@@ -10,14 +10,75 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../assets/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/cartStyle.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/Style.css"> 
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
 
     <% include common/main.html%>
 
-    <div class='row'>
+    <div class="container">
+        <table id="cart" class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th style="width:50%">Product</th>
+                    <th style="width:10%">Price</th>
+                    <th style="width:8%">Quantity</th>
+                    <th style="width:22%" class="text-center">Subtotal</th>
+                    <th style="width:10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(function(item){ %>
+                <tr>
+                    <td data-th="Product">
+                        <div class="row">
+                            <div class="col-sm-2 hidden-xs"><img src="../assets/images/<%= item.type %>/<%= item.imageName %>"
+                                    alt="..." class="img-responsive" /></div>
+                            <div class="col-sm-10">
+                                <h4 class="nomargin">
+                                    <%= item.title  %>
+                                </h4>
+                                <p>
+                                    <%= item.description  %>
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-th="Price">
+                        <%= item.prize  %>
+                    </td>
+                    <td data-th="Quantity">
+                        <input type="number" class="form-control text-center" value="1">
+                    </td>
+                    <td data-th="Subtotal" class="text-center">1.99</td>
+                    <td class="actions" data-th="">
+                        <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                        <a href="/cart/remove/<%= item._id %>">
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </a>
+                    </td>
+                </tr>
+                <% });%>
+            </tbody>
+            <tfoot>
+                <tr class="visible-xs">
+                    <td class="text-center"><strong>Total 1.99</strong></td>
+                </tr>
+                <tr>
+                    <!-- <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td> -->
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
+                    <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- <div class='row'>
         <% data.forEach(function(item){ %>
         <div class='col-sm-4'>
             <div class='thumbnail'>
@@ -32,9 +93,15 @@
                     </p>
                 </a>
             </div>
+            <a href="/cart/remove/<%= item._id %>">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Remove
+                </button>
+            </a>
+
         </div>
         <% });%>
-    </div>
+    </div> -->
 
 </body>
 <% include common/footer.html%>

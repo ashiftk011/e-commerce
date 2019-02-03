@@ -4,9 +4,11 @@ var bodyparser = require('body-parser');
 var session = require("express-session");
 var url = require('url');
 var cookieParser = require('cookie-parser');
+var mongoose = require("mongoose");
 
 var mongojs = require('mongojs');
 var db = mongojs('D2D', ["item"]);
+
 
 
 //Router Path
@@ -15,6 +17,9 @@ var itemList = require('./routes/itemList');
 var admin = require('./routes/admin');
 
 var app = express();
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost:27017/D2D", { useNewUrlParser: true });
+
 //set port
 var port = 3000;
 
@@ -62,9 +67,22 @@ app.post('/addtocart', function (req, res, next) {
     if (!req.session.items) {
         req.session.items = [];
     }
+    req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
 
     res.redirect("/details/" + id);
+});
+
+app.get('/addtocart/:type/:id', function (req, res, next) {
+    var id = req.params['id'];
+    var type = req.params['type'];
+    if (!req.session.items) {
+        req.session.items = [];
+    }
+    req.session.items = req.session.items.filter(itemId => itemId != id)
+    req.session.items.push(id);
+
+    res.redirect("/items/" + type);
 });
 
 //cart
@@ -99,6 +117,12 @@ app.get("/cart", function (req, res, next) {
             }
         })
     }
+
+})
+
+app.get("/cart/remove/:id", function (req, res, next) {
+    req.session.items = req.session.items.filter(item => item != req.params.id);
+    res.redirect('/cart');
 })
 
 app.listen(port, function () {
