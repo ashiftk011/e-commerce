@@ -2,60 +2,95 @@
 <html lang="en">
 
 <head>
-    <title>itemDetails</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../assets/styles/style.css">
-    <link rel="stylesheet" type="text/css" href="../assets/styles/minstyle.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-</head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Product Details</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+        <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../assets/css/mdb.min.css" rel="stylesheet">
+        <link href="../assets/css/style.min.css" rel="stylesheet">
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+</head>
+<style>
+    #filter-sidebar{
+        margin-top: 80px;
+        margin-left: -60px !important;
+        height: 100%;
+    }
+</style>
+
+<body class="grey lighten-3">
 
     <% include common/main.html%>
+    <main>
+        <div class="container">
+            <div class="row" id="filter-sidebar">
+                <aside class="col-sm-3">
+                    <p>Filter by</p>
+                    <div class="card">
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Brands </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                <form>
+                                    <label class="form-check">
+                                      <input class="form-check-input" type="checkbox" value="">
+                                      <span class="form-check-label">
+                                        Mersedes Benz
+                                      </span>
+                                    </label> 
+                                    <label class="form-check">
+                                      <input class="form-check-input" type="checkbox" value="">
+                                      <span class="form-check-label">
+                                        Nissan Altima
+                                      </span>
+                                    </label>
+                                    <label class="form-check">
+                                      <input class="form-check-input" type="checkbox" value="">
+                                      <span class="form-check-label">
+                                        Another Brand
+                                      </span>
+                                    </label>
+                                </form>
+                                </div> 
+                            </div>
+                        </article> 
 
-    <div id="category" class="bg-1">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/perfume">
-                            <img src="../assets/images/perfume.jpeg" alt="Perfumes">
-                            <br>
-                            <p>
-                                <strong>Perfumes</strong>
-                            </p>
-                        </a>
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Choose type </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                <label class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                  <span class="form-check-label">
+                                    First hand items
+                                  </span>
+                                </label>
+                                <label class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                  <span class="form-check-label">
+                                    Brand new items
+                                  </span>
+                                </label>
+                                <label class="form-check">
+                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                  <span class="form-check-label">
+                                    Some other option
+                                  </span>
+                                </label>
+                                </div> 
+                            </div>
+                        </article> 
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/watch">
-                            <img src="../assets/images/watch.jpeg" alt="Watches">
-                            <br>
-                            <p>
-                                <strong>Watches</strong>
-                            </p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="thumbnail">
-                        <a href="/items/dress">
-                            <img src="../assets/images/dress.jpeg" alt="Dresses">
-                            <br>
-                            <p>
-                                <strong>Dresses</strong>
-                            </p>
-                        </a>
-                    </div>
-                </div>
+                </aside>
             </div>
+
+    <div class='row'>
         </div>
     </div>
 
@@ -116,7 +151,9 @@
             </div>
         </div>
         <% });%>
-    </div> -->
+    </div>-->
+</div>
+</main>
 </body>
 
 </html>
