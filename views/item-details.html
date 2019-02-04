@@ -53,9 +53,11 @@
               <button class="btn btn-primary btn-md my-0 p" type="submit" id="add-cart">Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
               </button>
-              <button type="button" class="btn btn-primary btn-md my-0 p" data-toggle="modal" data-target="#exampleModal">
-                Order Now
-              </button>
+              <a href="/checkout/<%= id %>">
+                <button type="button" class="btn btn-primary btn-md my-0 p" data-toggle="modal" data-target="#exampleModal">
+                  Order Now
+                </button>
+              </a>
             </form>
           </div>
         </div>

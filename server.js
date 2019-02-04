@@ -11,6 +11,7 @@ var product = require('./model/product');
 //Router Path
 var itemDetails = require('./routes/item-details');
 var itemList = require('./routes/itemList');
+var checkout = require('./routes/checkout');
 var admin = require('./routes/admin');
 
 var app = express();
@@ -38,6 +39,7 @@ app.use('/utils', express.static('utils'));
 //api url handling
 app.use('/details', itemDetails);
 app.use('/items', itemList);
+app.use('/checkout', checkout);
 app.use('/admin', admin);
 
 const sessionLifeTime = 1000 * 60 * 60;
@@ -80,7 +82,7 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
     }
     req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
-    cartItemsCount=req.session.items.length;
+    cartItemsCount = req.session.items.length;
     res.redirect("/items/" + type);
 });
 
@@ -113,8 +115,47 @@ app.get("/cart", function (req, res, next) {
 
 app.get("/cart/remove/:id", function (req, res, next) {
     req.session.items = req.session.items.filter(item => item != req.params.id);
-    cartItemsCount=req.session.items.length;
+    cartItemsCount = req.session.items.length;
     res.redirect('/cart');
+})
+
+app.get("/checkouts/cart", function (req, res, next) {
+    var id;
+    if (req.session.items) {
+        id = req.session.items;
+        var count = req.session.items.length;
+        var totalAmount = 0;
+        var products = [];
+        id.forEach((itemID) => {
+            product.findById(itemID, function (err, product) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (product.isOnSale = "Y") {
+                        totalAmount = totalAmount + product.offerPrice;
+                        products.push(product);
+                        count--;
+                    }
+                    else {
+                        totalAmount = totalAmount + product.prize;
+                        products.push(product);
+                        count--;
+                    }
+                    date = new Date();
+                    if (count == 0) {
+                        res.render("checkout.html", {
+                            id: id,
+                            items: products,
+                            total: totalAmount,
+                            count: null,
+                            date:date
+                        });
+                    }
+                }
+            });
+        })
+    }
 })
 
 app.listen(port, function () {

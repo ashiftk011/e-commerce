@@ -1,0 +1,15 @@
+var mongoos = require('mongoose');
+var Schema = mongoos.Schema;
+
+var CustomerDetails=new Schema({
+  firstName:{type:String,required: true},
+  lastName:{type:String,required: true},
+  mobile:{type:Number,required: true},
+  address:{type:Array},
+  total:{type:Number,require:true},
+  orderDate:{type:Date,require:true},
+  items:{type:Array,require:true},
+  zip:{type:Number},
+});
+
+module.exports=mongoos.model('customerDetails',CustomerDetails)

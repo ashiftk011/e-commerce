@@ -17,7 +17,6 @@ router.get("/:type", function (req, res, next) {
                 var brands = null;
                 var material = null;
                 var displayType = null
-                console.log(itemFilterContents);
                 if (itemFilterContents)
                     brands = itemFilterContents.find(fltr => fltr.category == itemType && fltr.type == "brand").values
                 if (itemType == "perfume") {
@@ -32,7 +31,6 @@ router.get("/:type", function (req, res, next) {
                     imagePath = "../assets/images/dresses/";
                     material = itemFilterContents.find(fltr => fltr.category == "dresses" && fltr.type == "material").values
                 }
-                console.log(brands);
                 res.render('items-list.html', {
                     data: items,
                     brands: brands,
