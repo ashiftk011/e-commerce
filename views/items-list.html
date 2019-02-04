@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Product Details</title>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-        <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="../assets/css/mdb.min.css" rel="stylesheet">
-        <link href="../assets/css/style.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/mdb.min.css" rel="stylesheet">
+    <link href="../assets/css/style.min.css" rel="stylesheet">
+    <link href="../assets/styles/minstyle.css" rel="stylesheet">
 
 </head>
 <style>
@@ -35,106 +36,102 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                <form>
-                                    <label class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="">
-                                      <span class="form-check-label">
-                                        Mersedes Benz
-                                      </span>
-                                    </label> 
-                                    <label class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="">
-                                      <span class="form-check-label">
-                                        Nissan Altima
-                                      </span>
-                                    </label>
-                                    <label class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="">
-                                      <span class="form-check-label">
-                                        Another Brand
-                                      </span>
-                                    </label>
-                                </form>
-                                </div> 
+                                    <form>
+                                        <% brands.forEach(function(brand){ %>
+                                        <label class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            <span class="form-check-label">
+                                                <%= brand %>
+                                            </span>
+                                        </label>
+                                        <% }) %>
+                                    </form>
+                                </div>
                             </div>
-                        </article> 
-
+                        </article>
+                        <% if(materials){ %>
                         <article class="card-group-item">
                             <header class="card-header">
-                                <h6 class="title">Choose type </h6>
+                                <h6 class="title">Material</h6>
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                <label class="form-check">
-                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
-                                  <span class="form-check-label">
-                                    First hand items
-                                  </span>
-                                </label>
-                                <label class="form-check">
-                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
-                                  <span class="form-check-label">
-                                    Brand new items
-                                  </span>
-                                </label>
-                                <label class="form-check">
-                                  <input class="form-check-input" type="radio" name="exampleRadio" value="">
-                                  <span class="form-check-label">
-                                    Some other option
-                                  </span>
-                                </label>
-                                </div> 
+                                    <% materials.forEach(function(material){ %>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <span class="form-check-label">
+                                            <%= material %>
+                                        </span>
+                                    </label>
+                                    <%})%>
+                                </div>
                             </div>
-                        </article> 
+                        </article>
+                        <%}%>
+                        <% if(displayTypes){ %>
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Display</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <% displayTypes.forEach(function(displayType){ %>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <span class="form-check-label">
+                                            <%= displayType %>
+                                        </span>
+                                    </label>
+                                    <%})%>
+                                </div>
+                            </div>
+                        </article>
+                        <%}%>
                     </div>
                 </aside>
             </div>
 
-    <div class='row'>
-        </div>
-    </div>
+            <div class="row">
+                <% data.forEach(function(item){ %>
+                <div class="col-xs-4">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="/details/<%= item._id %>">
+                                <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
+                                <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
+                            </a>
 
-    <div class="container">
-        <div class="row">
-            <% data.forEach(function(item){ %>
-            <div class="col-xs-4">
-                <div class="product-grid">
-                    <div class="product-image">
-                        <a href="/details/<%= item._id %>">
-                            <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
-                            <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
-                        </a>
-
-                        <ul class="social">
-                            <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
-                            <li><a href="" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
-                            <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                            <ul class="social">
+                                <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
+                                <li><a href="" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                                <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i
+                                            class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                            <span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span>
+                        </div>
+                        <ul class="rating">
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star disable"></li>
                         </ul>
-                        <span class="product-new-label">Sale</span>
-                        <span class="product-discount-label">20%</span>
-                    </div>
-                    <ul class="rating">
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star disable"></li>
-                    </ul>
-                    <div class="product-content">
-                        <h3 class="title"><a href="#">
-                                <%= item.title  %></a></h3>
-                        <div class="price">
-                            <%= item.prize  %>
-                            <span>$20.00</span>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">
+                                    <%= item.title  %></a></h3>
+                            <div class="price">
+                                <%= item.prize  %>
+                                <span>$20.00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <% });%>
             </div>
-            <% });%>
         </div>
-    </div>
 
-    <!-- <div class='row'>
+        <!-- <div class='row'>
         <% data.forEach(function(item){ %>
         <div class='col-sm-4'>
             <div class='thumbnail'>
@@ -152,8 +149,8 @@
         </div>
         <% });%>
     </div>-->
-</div>
-</main>
+        </div>
+    </main>
 </body>
 
 </html>

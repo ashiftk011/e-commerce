@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/styles/login.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <% include ../common/admin/leftmenu.html %>
+        <div id="content">
+            <h2>Add Item</h2>
+            <hr>
+            <% if(status){ 
+                if(status == 'success'){ %>
+            <div class="alert alert-success">
+                <p>Uploaded Successfully</p>
+            </div>
+            <% } else {%>
+            <div class="alert alert-danger">
+                <p class="text-center">
+                    <%= status %>
+                </p>
+            </div>
+            <%  }
+            } %>
+            <div class="row">
+                <div class="col-sm-4">
+                    <form action="/admin/addfilter" method="post">
+                        <div class="row">
+                            <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                                <label>Product Category</label><br>
+                                <select name="category" id="category" class="chosen-select" required>
+                                    <option>Select Product Category</option>
+                                    <option value="watch">watches</option>
+                                    <option value="dresses">dresses</option>
+                                    <option value="perfume">perfume</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                                <label>Filter Name</label><br>
+                                <select name="type" id="type" class="chosen-select" required>
+                                    <option>Select Type</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                                <label>Filter (Eg:Fossil,Tissot ,..etc)</label><br>
+                                <input type="text" name="values" required />
+                            </div>
+                            <div id="addmore"></div>
+                            <a class="btn btn-primary" id="add">Add More</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-8">
+                    <div class="row w-100">
+                        <% datas.forEach(function(data){
+                            if(data.category == 'watch'){%>
+                        <div class="col-md-3">
+                            <div class="card border-info mx-sm-1 p-3">
+                                <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-clock-o"
+                                        aria-hidden="true"></span></div>
+                                <div class="text-info text-center mt-3">
+                                    <h4>
+                                        <%= data.type %>
+                                    </h4>
+                                </div>
+                                <div class="text-info text-center mt-2">
+                                    <%= data.values %> <br>
+                                </div>
+                            </div>
+                        </div>
+                        <%}})%>
+                    </div><br>
+                    <div class="row w-100">
+                        <% datas.forEach(function(data){
+                    if(data.category == 'dresses'){%>
+                        <div class="col-md-3">
+                            <div class="card border-info mx-sm-1 p-3">
+                                <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-clock-o"
+                                        aria-hidden="true"></span></div>
+                                <div class="text-info text-center mt-3">
+                                    <h4>
+                                        <%= data.type %>
+                                    </h4>
+                                </div>
+                                <div class="text-info text-center mt-2">
+                                    <%= data.values %> <br>
+                                </div>
+                            </div>
+                        </div>
+                        <%}})%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- <table>
+                <th>Category</th>
+                <th>Filter Type</th>
+                <th>Sub Categories</th>
+                <tbody>
+                    <% datas.forEach(function(data){
+                                if(data.category == 'watch'){%>
+                    <tr>
+                        <td>Watch</td>
+                        <td>
+                            <%= data.type %>
+                        </td>
+                        <td>
+                            <%= data.values %>
+                        </td>
+
+                    </tr>
+                    <% } else if(data.category == 'dresses'){%>
+                    <tr>
+                        <td>Dress</td>
+                        <td>
+                            <%= data.type %>
+                        </td>
+                        <td>
+                            <%= data.values %>
+                        </td>
+                    </tr>
+                    <% } else if(data.category == 'perfume'){%>
+                    <tr>
+                        <td>Perfume</td>
+                        <td>
+                            <%= data.type %>
+                        </td>
+                        <td>
+                            <%= data.values %>
+                        </td>
+
+                    </tr>
+                    <% }
+                                })%>
+                </tbody>
+            </table> -->
+    </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sidebar').find('ul li').each(function () {
+            if ($(this).attr('id') == 'addfilter')
+                $(this).addClass('active');
+        });
+
+        $('select[name=category]').on('change', function (e) {
+            var selCat = $('#category option:selected').val();
+            if (selCat == 'watch') {
+                $('#type').empty()
+                $('#type').append('<option selected="selected" value="brand">Brand</option>');
+                $('#type').append('<option  value="material">Material</option>');
+                $('#type').append('<option  value="display">Display type</option>');
+            } else if (selCat == 'dresses') {
+                $('#type').empty();
+                $('#type').append('<option selected="selected" value="brand">Brand</option>');
+                $('#type').append('<option value="material">Material</option>');
+                $('#type').append('<option value="size">Size</option>');
+                $('#type').append('<option value="category">Categories</option>');
+            } else if (selCat == 'perfume') {
+                $('#type').empty();
+                $('#type').append('<option selected="selected" value="brand">Brand</option>');
+                $('#type').append('<option value="quantity">Quantity</option>');
+            } else {
+                $('#type').empty();
+                $('#type').append('<option>Please Select</option>');
+            }
+            selectBox = selectBox + '</div>';
+            $('#filterName').replaceWith(selectBox);
+        });
+
+        $('#add').click(function (e) {
+            e.preventDefault();
+            var newInput = '<div class="col-xs-9 col-sm-8 col-lg-12 form-group">' +
+                '<label>Filter</label><br>' +
+                '<input type="text" name="values" required/>' +
+                '</div>';
+            $('#addmore').append(newInput);
+        });
+    });
+</script>
+
+</html>

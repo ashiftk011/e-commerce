@@ -2,16 +2,18 @@
 <html lang="en">
 
 <head>
-    <title>itemDetails</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/mdb.min.css" rel="stylesheet">
+    <link href="../assets/css/style.min.css" rel="stylesheet">
+    <link href="../assets/styles/minstyle.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../assets/styles/cartStyle.css">
-    <link rel="stylesheet" type="text/css" href="../assets/styles/Style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/cartStyle.css">
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
@@ -21,6 +23,10 @@
     <% include common/main.html%>
 
     <div class="container">
+        <%= data.lenght%>
+        <% if (data.length==0){  %>
+        <div>There is No Cart Items</div>
+        <% } else{%>
         <table id="cart" class="table table-hover table-condensed">
             <thead>
                 <tr>
@@ -80,32 +86,7 @@
                 </tr>
             </tfoot>
         </table>
+        <%}%>
     </div>
-
-    <!-- <div class='row'>
-        <% data.forEach(function(item){ %>
-        <div class='col-sm-4'>
-            <div class='thumbnail'>
-                <a href='/details/<%= item._id %>'>
-                    <img src="<%= item.imagePath %>">
-                    <br>
-                    <p>
-                        <strong>
-                            <%= item.title  %> </strong><br>
-                        <strong>
-                            <%= item.prize  %> </strong>
-                    </p>
-                </a>
-            </div>
-            <a href="/cart/remove/<%= item._id %>">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Remove
-                </button>
-            </a>
-
-        </div>
-        <% });%>
-    </div> -->
-
 </body>
 <% include common/footer.html%>

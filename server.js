@@ -103,7 +103,7 @@ app.get("/cart", function (req, res, next) {
         });
     }
     if (!req.session.items || req.session.items.length == 0) {
-        res.render('cart.html', { data: null });
+        res.render('cart.html', { data: cartItemsList });
     }
 });
 

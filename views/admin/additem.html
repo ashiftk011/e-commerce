@@ -70,6 +70,40 @@
                             </select>
                         </div>
                     </div>
+                    <div id="perfumedetails" style="display:none;">
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Material</label><br>
+                            <input type="text" name="quantity" />
+                        </div>
+                    </div>
+                    <div id="dressdetails" style="display:none;">
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Material</label><br>
+                            <select name="dressmaterial" id="dressmaterial">
+                                <option value="cotton"> Cotton</option>
+                                <option value="polyster">Polyster</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Size</label>
+                            <select name="size" id="size">
+                                <option value="S"> Small</option>
+                                <option value="M">Medium</option>
+                                <option value="L">Large</option>
+                                <option value="XL">Extra Large</option>
+                                <option value="XXL">Double XL</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Category</label>
+                            <select name="category" id="category">
+                                <option value="men"> Men</option>
+                                <option value="women">Analog</option>
+                                <option value="boy">Analog</option>
+                                <option value="girl">Analog</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
                         <label>Price</label><br>
                         <input type="number" name="price" required />
@@ -109,6 +143,7 @@
                     <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
                         <label>Select Image Tag</label><br>
                         <select name="tags" id="tags">
+                            <option>None</option>
                             <option value="SALE">Sale</option>
                             <option value="BEST SELLER">Best Seller</option>
                             <option value="NEW ARRIVALS">New Arrival</option>
@@ -129,6 +164,8 @@
     </div>
 </body>
 <script type="text/javascript">
+var filters = $('input[name=data]').val();
+console.log(filters[0]);
     $(document).ready(function(){
         $('#sidebar').find('ul li').each(function(){
             if($(this).attr('id') == 'additem')
@@ -137,14 +174,19 @@
 
         $('select[name=type]').on('change',function(){
             var selType = $('#type option:selected').val();
+            //fetch fragment with lookupvalues according to type
             if(selType=='watch'){
                 $('#watchdetails').show();
-                $('#watchdetails').find('input').each(function(){
-                });
+                $('#perfumedetails').hide();
+                $('#dressdetails').hide();
             }else if(selType == 'perfume'){
                 $('#perfumedetails').show();
+                $('#watchdetails').hide();
+                $('#dressdetails').hide();
             }else{
                 $('#dressdetails').show();
+                $('#perfumedetails').hide();
+                $('#watchdetails').hide();
             }
         });
         $('input[type=radio][name=isOnsale]').change(function(){
@@ -167,7 +209,15 @@
             $('input[name=offerprice]').val(offerprice);
         });
 
-        $('')
+        $('select[name=tags]').on('change',function(){
+            var selTag = $('#tags option:selected').val();
+            var isSaleEnabled = $('input[name=isOnsale]:checked').val();
+            if(isSaleEnabled == 'N'){
+                $('input[name=imagetag]').val(selTag);
+            }else{
+                $('input[name=imagetag]').val('SALE');
+            }
+        });
     });
 </script>
 </html>

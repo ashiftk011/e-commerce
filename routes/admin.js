@@ -2,11 +2,12 @@ var express = require('express');
 var multer = require('multer');
 var moongoose = require('mongoose');
 var product = require('../model/product');
+var lookupValue = require('../model/lookupValue');
 
 var router = express.Router();
 
 var mongodb = moongoose.connection;
-mongodb.once("open",function(){
+mongodb.once("open", function () {
     console.log(':: connected :::');
 });
 
@@ -47,48 +48,38 @@ router.get('/dashboard', function (req, res, next) {
 });
 
 router.get('/products', function (req, res, next) {
-    
+
     if (isAuthenticated) {
         product.find(function (err, products) {
             console.log(products);
             console.log('------------------------');
             res.render('admin/products.html', { products: products });
         });
-        
-        // console.log(productsM);
-        //console.log('------------------------');
-        // db.item.find({}, function (err, products) {
-        //     if (err) {
-        //         console.log("error");
-        //     }
-        //     res.render('admin/products.html', { products: products });
-        // });
     } else
         res.redirect('/admin/accessdenied');
 });
 
 router.get('/additem', function (req, res, next) {
-    if (isAuthenticated){
-        res.render('admin/additem.html', { status: null });
-    }else
+    if (isAuthenticated) {
+        lookupValue.find({}, function (err, datas) {
+            res.render('admin/additem.html', { status: null, datas: datas });
+        });
+    } else
         res.redirect('/admin/accessdenied');
 });
 
 router.post('/additem', function (req, res, next) {
-    console.log(':: To Upload Img :: ');
     upload(req, res, function (err) {
         if (err) {
-            console.log(err.code);//LIMIT_UNEXPECTED_FILE - max limit Exceeded
-            //res.render('admin/additem.html',{ status : LIMIT_UNEXPECTED_FILE });
             return res.redirect('/admin/error');
         }
-        var newitem ={
+        var newitem = {
             type: req.body.type,
             title: req.body.productName,
             productCode: req.body.productCode,
             brand: req.body.brand,
             description: req.body.description,
-            imageName: req.body.productCode+'.'+req.files[0].originalname.split('.')[1],
+            imageName: req.body.productCode + '.' + req.files[0].originalname.split('.')[1],
             prize: req.body.price,
             gender: req.body.gender,
             isOnSale: req.body.isOnsale,
@@ -107,6 +98,77 @@ router.post('/additem', function (req, res, next) {
         newProduct.save();
         return res.render('admin/additem.html', { status: 'success' });
     });
+});
+
+router.get('/addfilter', function (req, res, next) {
+    if (isAuthenticated) {
+        lookupValue.find({}, function (err, datas) {
+            res.render('admin/addfilter.html', { status: null, datas: datas });
+        });
+    }
+    else
+        res.redirect('/admin/accessdenied');
+});
+
+router.post('/addfilter', function (req, res, next) {
+    var isDataInserted = false;
+    if (isAuthenticated) {
+        var statusDescription = 'success';
+        var found = false;
+        lookupValue.find({ "category": req.body.category, "type": req.body.type }, function (err, items) {
+            console.log(items);
+            if (items.length > 0) {
+                item = items[0];
+                if (req.body.values[0].length > 1) {
+                    for (var count = 0; count < req.body.values.length; count++) {
+                        if (item.values.find(values => values == req.body.values[count].toUpperCase()) == 1) {
+                            found = true;
+                            statusDescription = 'Filter Already Exists';
+                        }
+                        else {
+                            item.values.push(req.body.values[count].toUpperCase());
+                        }
+                    }
+                } else {
+                    if (item.values.find(values => values == req.body.values.toUpperCase()) == 1) {
+                        found = true;
+                        statusDescription = 'Filter Already Exists';
+                    }
+                    else {
+                        item.values.push(req.body.values.toUpperCase());
+                    }
+                }
+                if (found == false) {
+                    console.log('update')
+                    item.save();
+                    isDataInserted = true;
+                }
+            } else {
+                var values = [];
+                if (req.body.values[0].length > 1) {
+                    for (var count = 0; count < req.body.values.length; count++) {
+                        values.push(req.body.values[count].toUpperCase());
+                    }
+                } else {
+                    values.push(req.body.values.toUpperCase());
+                }
+                var newLookupValue = {
+                    category: req.body.category,
+                    type: req.body.type,
+                    values: values
+                };
+                console.log(newLookupValue);
+                var filterLookup = new lookupValue(newLookupValue);
+                filterLookup.save();
+                isDataInserted = true;
+            }
+            if (isDataInserted == true)
+                lookupValue.find({}, function (err, filterType) {
+                    res.render('admin/addfilter.html', { status: statusDescription, datas: filterType });
+                });
+        });
+    } else
+        res.redirect('/admin/accessdenied');
 });
 
 router.get('/orders', function (req, res, next) {
