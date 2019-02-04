@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Product Details</title>
@@ -13,71 +13,78 @@
 </head>
 
 <body class="grey lighten-3">
-    <% include common/main.html%>
+  <% include common/main.html%>
   <main class="mt-5 pt-4">
-      <div class="container dark-grey-text mt-5">
-        <div class="row wow fadeIn">
+    <div class="container dark-grey-text mt-5">
+      <div class="row wow fadeIn">
 
-          <div class="col-md-6 mb-4">
-            <!-- <span style="background: url('<%= imagePath %>') no-repeat; display: inline-block;
+        <div class="col-md-6 mb-4">
+          <!-- <span style="background: url('<%= imagePath %>') no-repeat; display: inline-block;
                 height: 17px;
                 width: 50px;"></span> -->
-            <img src="<%= imagePath %>" class="img-fluid" alt="">
-          </div>
+          <img src="<%= imagePath %>" class="img-fluid" alt="">
+        </div>
 
-          <div class="col-md-6 mb-4">
-            <div class="p-4">
-              <div class="mb-3">
-                  <h4 class="my-4 h4"><%= title %></h4>
-              </div>
-
-              <p class="lead">
-                <span class="mr-1">
-                    <del><%= prize %></del>
-                </span>
-                <span>600</span>
-              </p>
-    
-              <p class="lead font-weight-bold">Description</p>
-    
-              <p><%= description %></p>
-
-              <form class="d-flex justify-content-left" method="POST" action="/addtocart">
-                  <input type="hidden" name="item-id" value="<%= id %>" >
-                  <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-                  <button class="btn btn-primary btn-md my-0 p" type="submit" id="add-cart">Add to cart
-                    <i class="fas fa-shopping-cart ml-1"></i>
-                  </button>
-                  <button type="button" class="btn btn-primary btn-md my-0 p" data-toggle="modal" data-target="#exampleModal">
-                      Order Now
-                  </button>
-              </form>
+        <div class="col-md-6 mb-4">
+          <div class="p-4">
+            <div class="mb-3">
+              <h4 class="my-4 h4">
+                <%= title %>
+              </h4>
             </div>
-          </div>
-        </div>
 
-        <hr>
+            <p class="lead">
+              <span class="mr-1">
+                <del>
+                  <%= prize %></del>
+              </span>
+              <span>600</span>
+            </p>
 
-        <div class="row d-flex justify-content-center wow fadeIn">
-          <div class="col-md-6 text-center">
-            <h4 class="my-4 h4">Additional information</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-          </div>
-        </div>
-        <div class="row wow fadeIn">
-          <div class="col-lg-4 col-md-12 mb-4">
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+            <p class="lead font-weight-bold">Description</p>
+
+            <p>
+              <%= description %>
+            </p>
+
+            <form class="d-flex justify-content-left" method="POST" action="/addtocart/<%= id %>">
+              <input type="hidden" name="item-id" value="<%= id %>">
+              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-primary btn-md my-0 p" type="submit" id="add-cart">Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </button>
+              <button type="button" class="btn btn-primary btn-md my-0 p" data-toggle="modal" data-target="#exampleModal">
+                Order Now
+              </button>
+            </form>
           </div>
         </div>
       </div>
-    </main>
+
+      <hr>
+
+      <div class="row d-flex justify-content-center wow fadeIn">
+        <div class="col-md-6 text-center">
+          <h4 class="my-4 h4">Additional information</h4>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
+            voluptates,
+            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
+        </div>
+      </div>
+      <div class="row wow fadeIn">
+        <div class="col-lg-4 col-md-12 mb-4">
+          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 <% include common/footer.html%>
+
 </html>

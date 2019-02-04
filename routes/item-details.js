@@ -20,7 +20,7 @@ router.get('/:id', function (req, res, nex) {
             else if (item.type == "dress") {
                 imagePath = "../assets/images/dresses/" + item.imageName;
             }
-            res.render('item-details.html', { title: item.title, type: item.type, imageName: item.imageName, prize: item.prize, description: item.description });
+            res.render('item-details.html', { id: item._id,title: item.title, type: item.type, imageName: item.imageName, prize: item.prize, description: item.description });
         }
     })
 

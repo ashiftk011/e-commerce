@@ -20,6 +20,8 @@ mongoose.connect("mongodb://localhost:27017/D2D", { useNewUrlParser: true });
 //set port
 var port = 3000;
 
+global.cartItemsCount = 0
+
 //view 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -54,18 +56,19 @@ app.use(session({
 
 //initial get function
 app.get('/', function (req, res, nex) {
+    if (!req.session.items)
+        cartItemsCount = 0;
     res.render('mainpage.html');
 });
 
 //add cart to session
-app.post('/addtocart', function (req, res, next) {
-    var id = req.body["item-id"];
+app.post('/addtocart/:id', function (req, res, next) {
     if (!req.session.items) {
         req.session.items = [];
     }
     req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
-
+    cartItemsCount = req.session.items.length;
     res.redirect("/details/" + id);
 });
 
@@ -77,6 +80,7 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
     }
     req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
+    cartItemsCount=req.session.items.length;
     res.redirect("/items/" + type);
 });
 
@@ -109,6 +113,7 @@ app.get("/cart", function (req, res, next) {
 
 app.get("/cart/remove/:id", function (req, res, next) {
     req.session.items = req.session.items.filter(item => item != req.params.id);
+    cartItemsCount=req.session.items.length;
     res.redirect('/cart');
 })
 

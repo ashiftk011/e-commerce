@@ -107,8 +107,12 @@
                                 <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i
                                             class="fa fa-shopping-cart"></i></a></li>
                             </ul>
-                            <span class="product-new-label">Sale</span>
-                            <span class="product-discount-label">20%</span>
+                            <span class="product-new-label">
+                                <%= item.imageTag %></span>
+                            <% if(item.discount){%>
+                            <span class="product-discount-label">
+                                <%= item.discount %>%</span>
+                            <%}%>
                         </div>
                         <ul class="rating">
                             <li class="fa fa-star"></li>
@@ -121,8 +125,13 @@
                             <h3 class="title"><a href="#">
                                     <%= item.title  %></a></h3>
                             <div class="price">
+                                <% if(isOnSale="Y"){%>
+                                <%= item.offerPrice %>
+                                <span>
+                                    <%= item.prize  %></span>
+                                <%}else{%>
                                 <%= item.prize  %>
-                                <span>$20.00</span>
+                                <%}%>
                             </div>
                         </div>
                     </div>
