@@ -30,6 +30,7 @@
                 <aside class="col-sm-3">
                     <p>Filter by</p>
                     <div class="card">
+                        <% if(brands){%>
                         <article class="card-group-item">
                             <header class="card-header">
                                 <h6 class="title">Brands </h6>
@@ -46,10 +47,11 @@
                                         </label>
                                         <% }) %>
                                     </form>
+
                                 </div>
                             </div>
                         </article>
-                        <% if(materials){ %>
+                        <% }if(materials){ %>
                         <article class="card-group-item">
                             <header class="card-header">
                                 <h6 class="title">Material</h6>

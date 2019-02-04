@@ -48,7 +48,6 @@ router.get('/dashboard', function (req, res, next) {
 });
 
 router.get('/products', function (req, res, next) {
-
     if (isAuthenticated) {
         product.find(function (err, products) {
             console.log(products);
@@ -63,6 +62,17 @@ router.get('/additem', function (req, res, next) {
     if (isAuthenticated) {
         lookupValue.find({}, function (err, datas) {
             res.render('admin/additem.html', { status: null, datas: datas });
+        });
+    } else
+        res.redirect('/admin/accessdenied');
+});
+
+router.get('/filters/:type', function (req, res, next) {
+    if (isAuthenticated) {
+        console.log(req.params.type);
+        lookupValue.find({ "category": req.params.type}, function (err, datas) {
+            console.log(datas);
+            res.render('admin/fragments/filters.html', { datas: datas });
         });
     } else
         res.redirect('/admin/accessdenied');

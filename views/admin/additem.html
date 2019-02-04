@@ -47,67 +47,14 @@
                         <input type="text" name="productCode" required/>
                     </div>
                     <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Brand Name</label><br>
-                        <input type="text" name="brand" required/>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
                         <label>Description</label><br>
                         <input type="text" name="description" required/>
-                    </div>
-                    <div id="watchdetails" style="display:none;">
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Strap Material</label><br>
-                            <select name="material" id="material">
-                                <option value="chain"> Chain</option>
-                                <option value="leather">Leather</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Display Type</label>
-                            <select name="display" id="display">
-                                <option value="digital"> Digital</option>
-                                <option value="analog">Analog</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="perfumedetails" style="display:none;">
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Material</label><br>
-                            <input type="text" name="quantity" />
-                        </div>
-                    </div>
-                    <div id="dressdetails" style="display:none;">
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Material</label><br>
-                            <select name="dressmaterial" id="dressmaterial">
-                                <option value="cotton"> Cotton</option>
-                                <option value="polyster">Polyster</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Size</label>
-                            <select name="size" id="size">
-                                <option value="S"> Small</option>
-                                <option value="M">Medium</option>
-                                <option value="L">Large</option>
-                                <option value="XL">Extra Large</option>
-                                <option value="XXL">Double XL</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Category</label>
-                            <select name="category" id="category">
-                                <option value="men"> Men</option>
-                                <option value="women">Analog</option>
-                                <option value="boy">Analog</option>
-                                <option value="girl">Analog</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
                         <label>Price</label><br>
                         <input type="number" name="price" required />
                     </div>
+                    <div id="filters"></div>
                     <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
                         <label>Offer</label><br>
                         <div class="btn btn-group">
@@ -164,8 +111,6 @@
     </div>
 </body>
 <script type="text/javascript">
-var filters = $('input[name=data]').val();
-console.log(filters[0]);
     $(document).ready(function(){
         $('#sidebar').find('ul li').each(function(){
             if($(this).attr('id') == 'additem')
@@ -174,20 +119,8 @@ console.log(filters[0]);
 
         $('select[name=type]').on('change',function(){
             var selType = $('#type option:selected').val();
-            //fetch fragment with lookupvalues according to type
-            if(selType=='watch'){
-                $('#watchdetails').show();
-                $('#perfumedetails').hide();
-                $('#dressdetails').hide();
-            }else if(selType == 'perfume'){
-                $('#perfumedetails').show();
-                $('#watchdetails').hide();
-                $('#dressdetails').hide();
-            }else{
-                $('#dressdetails').show();
-                $('#perfumedetails').hide();
-                $('#watchdetails').hide();
-            }
+            getFilterFragment(selType);
+            
         });
         $('input[type=radio][name=isOnsale]').change(function(){
             if($(this).val()=='Y'){
@@ -219,5 +152,21 @@ console.log(filters[0]);
             }
         });
     });
+    function getFilterFragment(params) {
+        console.log('/admin/filters?type='+params);
+        $.ajax({
+            type: "get",
+            url: '/admin/filters/'+params,
+            cache: false,
+            data: params,
+            dataType: "html",
+            success: function (fragment) {
+                $('#filters').empty();
+                $("#filters").html(fragment);
+            },
+            error: function () {
+            }
+        });
+    }
 </script>
 </html>
