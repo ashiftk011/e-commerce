@@ -21,7 +21,10 @@ mongoose.connect("mongodb://localhost:27017/D2D", { useNewUrlParser: true });
 //set port
 var port = 3000;
 
-global.cartItemsCount = 0
+global.cartItemsCount = 0;
+
+global.checKoutItmeDetails = {};
+global.items = 'Items';
 
 //view 
 app.set('views', path.join(__dirname, 'views'));
@@ -94,6 +97,7 @@ app.get("/cart", function (req, res, next) {
     if (req.session.items) {
         cartItemsList = req.session.items;
         var itemSetcount = 0;
+        var totalAmount = 0;
         cartItemsList.forEach(element => {
             product.findById(element, function (error, itemDetails) {
                 if (error) {
@@ -102,54 +106,95 @@ app.get("/cart", function (req, res, next) {
                 else {
                     sessionItems.push(itemDetails);
                     itemSetcount++;
+                    if (itemDetails.isOnSale == "Y") {
+                        totalAmount = totalAmount + itemDetails.offerPrice;
+                    }
+                    else {
+                        totalAmount = totalAmount + itemDetails.prize;
+                    }
+
                     if (req.session.items.length == itemSetcount)
-                        res.render('cart.html', { data: sessionItems });
+                        res.render('cart.html', { data: sessionItems, totalAmount: totalAmount });
                 }
             });
         });
     }
     if (!req.session.items || req.session.items.length == 0) {
-        res.render('cart.html', { data: cartItemsList });
+        res.render('cart.html', { data: cartItemsList, totalAmount: totalAmount });
     }
 });
 
-app.get("/cart/remove/:id", function (req, res, next) {
-    req.session.items = req.session.items.filter(item => item != req.params.id);
+app.get("/checkouts/addCart/:id", function (req, res, next) {
+    var id = req.params['id'];
+    var type = req.params['type'];
+    if (!req.session.items) {
+        req.session.items = [];
+    }
+    req.session.items = req.session.items.filter(itemId => itemId != id)
+    req.session.items.push(id);
     cartItemsCount = req.session.items.length;
+    res.redirect("/cart");
+})
+
+app.get("/cart/remove/:id", function (req, res, next) {
+    if (req.session && req.session.items) {
+        req.session.items = req.session.items.filter(item => item != req.params.id);
+        cartItemsCount = req.session.items.length;
+    }
     res.redirect('/cart');
 })
 
-app.get("/checkouts/cart", function (req, res, next) {
+app.post("/checkouts", function (req, res, next) {
     var id;
     if (req.session.items) {
         id = req.session.items;
         var count = req.session.items.length;
-        var totalAmount = 0;
-        var products = [];
+        var totalItemCount = 0
+        var i = 0;
+        var jsonObject = {};
+        var key = 'checkoutItems';
+        jsonObject[key] = [];
         id.forEach((itemID) => {
             product.findById(itemID, function (err, product) {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    if (product.isOnSale = "Y") {
-                        totalAmount = totalAmount + product.offerPrice;
-                        products.push(product);
-                        count--;
+                    var prize = 0;
+                    if (product.isOnSale == "Y") {
+                        prize = product.offerPrice;
                     }
                     else {
-                        totalAmount = totalAmount + product.prize;
-                        products.push(product);
-                        count--;
+                        prize = product.prize;
                     }
+                    var data = {
+                        id: product._id,
+                        title: product.title,
+                        brand: product.brand,
+                        prize: prize,
+                        count: parseInt(req.body.count[i]),
+                        totalprize: parseInt(req.body.count[i]) * prize
+                    };
+                    jsonObject[key].push(data);
+                    totalItemCount = totalItemCount + parseInt(req.body.count[i]);
+                    i++;
+                    count--;
                     date = new Date();
                     if (count == 0) {
+                        checKoutItmeDetails[items] = [];
+                        jsonObject.checkoutItems.forEach((item) => {
+                            var itemSet = {
+                                id: item.id,
+                                count: item.count
+                            };
+                            checKoutItmeDetails[items].push(itemSet);
+                        });
                         res.render("checkout.html", {
                             id: id,
-                            items: products,
-                            total: totalAmount,
-                            count: null,
-                            date:date
+                            items: jsonObject,
+                            total: req.body.hdGrandTotal,
+                            count: totalItemCount,
+                            date: date
                         });
                     }
                 }

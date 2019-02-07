@@ -80,12 +80,6 @@
                 <label for="address" class="">Address</label>
               </div>
 
-              <!--address-2-->
-              <!-- <div class="md-form mb-5">
-                <input type="text" id="address2" name="address2" class="form-control">
-                <label for="address-2" class="">Address 2 (optional)</label>
-              </div> -->
-
               <!--Grid row-->
               <div class="row">
 
@@ -100,14 +94,8 @@
 
                 </div>
                 <!--Grid column-->
-                <% if(id!=null){%>
-                <% id.forEach(function(item){%>
-                <input type="hidden" class="form-control" name="items" id="items" value="<%= item%>">
-                <% })%>
-                <input type="hidden" class="form-control" name="total" id="total" value="<%= total%>">
                 <input type="hidden" class="form-control" name="orderDate" id="total" value="<%= date%>">
               </div>
-              <%}%>
               <!--Grid row-->
 
               <hr class="mb-4">
@@ -120,7 +108,7 @@
 
         </div>
         <!--Grid column-->
-
+        <% if(items!=null){%>
         <!--Grid column-->
         <div class="col-md-4 mb-4">
 
@@ -128,48 +116,43 @@
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Item Details</span>
             <span class="badge badge-secondary badge-pill">
-              <%if(count!=null){%>
-              <%= count %>
-              <%}else{%>
-              <%= cartItemsCount %>
-              <%}%>
+              <%=count%>
+            </span>
+          </h4>
+
+          <!-- Cart -->
+
+          <ul class="list-group mb-3 z-depth-1">
+            <% items.checkoutItems.forEach(function(item){%>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">
+                  <%= item.title %>
+                </h6>
+                <small class="text-muted">
+                  <%= item.brand %></small>
+              </div>
+              <span>
+                <%= item.prize %>*
+                <%= item.count %> </span>
+              <span class="text-muted">$
+                <%= item.totalprize %>
               </span>
-              </h4>
+            </li>
+            <% })%>
 
-              <!-- Cart -->
-              <% if(items!=null){%>
-              <ul class="list-group mb-3 z-depth-1">
-                <% items.forEach(function(item){%>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 class="my-0">
-                      <%= item.title %>
-                    </h6>
-                    <small class="text-muted">
-                      <%= item.brand %></small>
-                  </div>
-                  <span class="text-muted">$
-                    <% if(isOnSale="Y"){%>
-                    <%= item.offerPrice %>
-                    <%}else{%>
-                    <%= item.prize  %>
-                    <%}%>
-                  </span>
-                </li>
-                <% })%>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>$
+                <%= total%>
+              </strong>
+            </li>
+          </ul>
+          <%}%>
+          <!-- Cart -->
 
-                <li class="list-group-item d-flex justify-content-between">
-                  <span>Total (USD)</span>
-                  <strong>$
-                    <%= total%>
-                  </strong>
-                </li>
-              </ul>
-              <%}%>
-              <!-- Cart -->
-
-              <!-- Promo code -->
-              <!-- <form class="card p-2">
+          <!-- Promo code -->
+          <!-- <form class="card p-2">
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
                 aria-describedby="basic-addon2">
@@ -178,15 +161,15 @@
               </div>
             </div>
           </form> -->
-              <!-- Promo code -->
-
-          </div>
-          <!--Grid column-->
+          <!-- Promo code -->
 
         </div>
-        <!--Grid row-->
+        <!--Grid column-->
 
       </div>
+      <!--Grid row-->
+
+    </div>
   </main>
   <!--Main layout-->
 </body>

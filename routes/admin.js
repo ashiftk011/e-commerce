@@ -60,9 +60,7 @@ router.get('/products', function (req, res, next) {
 
 router.get('/additem', function (req, res, next) {
     if (isAuthenticated) {
-        lookupValue.find({}, function (err, datas) {
-            res.render('admin/additem.html', { status: null, datas: datas });
-        });
+        res.render('admin/additem.html', { status: null });
     } else
         res.redirect('/admin/accessdenied');
 });
@@ -70,7 +68,7 @@ router.get('/additem', function (req, res, next) {
 router.get('/filters/:type', function (req, res, next) {
     if (isAuthenticated) {
         console.log(req.params.type);
-        lookupValue.find({ "category": req.params.type}, function (err, datas) {
+        lookupValue.find({ "category": req.params.type }, function (err, datas) {
             console.log(datas);
             res.render('admin/fragments/filters.html', { datas: datas });
         });
@@ -79,6 +77,7 @@ router.get('/filters/:type', function (req, res, next) {
 });
 
 router.post('/additem', function (req, res, next) {
+    
     upload(req, res, function (err) {
         if (err) {
             return res.redirect('/admin/error');
@@ -108,6 +107,25 @@ router.post('/additem', function (req, res, next) {
         newProduct.save();
         return res.render('admin/additem.html', { status: 'success' });
     });
+});
+
+router.get('/edititem/:id', function (req, res, next) {
+    if (isAuthenticated) {
+        product.findById(req.params.id, function (err, itemDetail) {
+            res.render('admin/editItem.html', { status: null, itemDetail: itemDetail });
+        });
+    }
+    else
+        res.redirect('/admin/accessdenied');
+});
+
+router.post('/edititem', function (req, res, next) {
+    if (isAuthenticated) {
+        // TODO : update item details, check if image is changed
+        res.render('admin/editItem.html', { status: null, operationFlag: "U", itemDetail: null });
+    }
+    else
+        res.redirect('/admin/accessdenied');
 });
 
 router.get('/addfilter', function (req, res, next) {
@@ -149,7 +167,8 @@ router.post('/addfilter', function (req, res, next) {
                     }
                 }
                 if (found == false) {
-                    console.log('update')
+                    console.log('update');
+                    console.log(item);
                     item.save();
                     isDataInserted = true;
                 }
@@ -167,6 +186,7 @@ router.post('/addfilter', function (req, res, next) {
                     type: req.body.type,
                     values: values
                 };
+                console.log('save filterLookup :');
                 console.log(newLookupValue);
                 var filterLookup = new lookupValue(newLookupValue);
                 filterLookup.save();

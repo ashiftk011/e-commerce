@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <% include ../common/admin/leftmenu.html %>
+        <div id="content">
+            <h2>Add Item</h2>
+            <hr>
+            <% if(status){ 
+                if(status == 'success'){ %>
+            <div class="alert alert-success">
+                <p>Uploaded Successfully</p>
+            </div>
+            <% } else {%>
+            <div class="alert alert-danger">
+                <p class="text-center">
+                    <%= status %>
+                </p>
+            </div>
+            <%  }
+            } %>
+
+
+            <% if(operationFlag == "E"){ %>
+            <form enctype="multipart/form-data" action="/admin/edititem" method="post">
+                <%}else{%>
+                <form enctype="multipart/form-data" action="/admin/additem" method="post">
+                    <%}%>
+                    <div class="row">
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Product Category</label><br>
+                            <select name="type" id="type" class="chosen-select" required>
+                                <% if(operationFlag == "A"){%>
+                                <option>Select Product Category</option>
+                                <%}%>
+                                <option value="watch">watches</option>
+                                <option value="dresses">dresses</option>
+                                <option value="perfume">perfume</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Product Name</label><br>
+
+                            <% if(operationFlag == "E"){ %>
+                                <%= itemDetail.title %>
+                            <input type="text" name="productName" value="<%= itemDetail.title %>" required />
+                            <%}else{%>
+                            <input type="text" name="productName" required />
+                            <%}%>
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Product Code</label><br>
+                            <% if(operationFlag == "E"){ %>
+                            <input type="text" name="productCode" value="<%= itemDetail.productCode %>" readonly
+                                required />
+                            <%}else{%>
+                            <input type="text" name="productCode" required />
+                            <%}%>
+
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Description</label><br>
+                            <% if(operationFlag == "E"){ %>
+                            <input type="text" name="description" value="<%= itemDetail.description %>" required />
+                            <%}else{%>
+                            <input type="text" name="description" required />
+                            <%}%>
+                        </div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Price</label><br>
+                            <% if(operationFlag=="E" ){ %>
+                            <input type="number" name="price" value="<%= itemDetail.price %>" required />
+                            <%}else{%>
+                            <input type="number" name="price" required />
+                            <%}%>
+                        </div>
+                        <div id="filters"></div>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Offer</label><br>
+                            <div class="btn btn-group">
+                                <% if(operationFlag == "E"){ %>
+                                <% if(itemDetail.isOnSale == "Y"){%>
+                                <label><input type="radio" name="isOnsale" value="N" />Disable</label>
+                                <label><input type="radio" name="isOnsale" value="Y" checked />Enable</label><br>
+                                <% } else {%>
+                                <label><input type="radio" name="isOnsale" value="N" checked />Disable</label>
+                                <label><input type="radio" name="isOnsale" value="Y" />Enable</label><br>
+                                <% }%>
+                                <%}else{%>
+                                <label><input type="radio" name="isOnsale" value="N" />Disable</label>
+                                <label><input type="radio" name="isOnsale" value="Y" checked />Enable</label><br>
+                                <%}%>
+                            </div>
+                        </div>
+                        <div id="offerdetails">
+                            <% if(operationFlag=="E"){ %>
+                            <% if(itemDetail.isOnSale == "Y"){ %>
+                            <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                                <label>Discount Percentage</label><br>
+                                <input type="number" name="discount" id="discount" value="<%= itemDetail.discount %>"
+                                    required />
+                            </div>
+                            <% } %>
+                            <%}else{%>
+                            <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                                <label>Discount Percentage</label><br>
+                                <input type="number" name="discount" id="discount" required />
+                            </div>
+                            <%}%>
+                        </div>
+                        <% if(operationFlag=="E"){ %>
+                        <% if(itemDetail.isOnSale == "Y"){ %>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Price After Discount</label><br>
+                            <input type="number" name="offerprice" id="offerprice" value="<%= itemDetail.discount %>"
+                                readonly />
+                        </div>
+                        <% } %>
+                        <%}else{%>
+                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                            <label>Price After Discount</label><br>
+                            <input type="number" name="offerprice" id="offerprice" />
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                        <label>Gender</label><br>
+                        <select name="gender" id="gender">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                        <label>Stock Details</label><br>
+                        <div class="btn btn-group">
+                            <label><input type="radio" name="isInstock" value="Y" checked />In Stock</label>
+                            <label><input type="radio" name="isInstock" value="N" />Out Of Stock</label><br>
+                        </div>
+                    </div>
+                    <input type="hidden" name="imagetag" id="imagetag" <% if(operationFlag=="E" ){ %>
+                    value="
+                    <%= itemDetail.imageTag %>"
+                    <%}%> />
+                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                        <label>Select Image Tag</label><br>
+                        <select name="tags" id="tags">
+                            <option>None</option>
+                            <option value="SALE">Sale</option>
+                            <option value="BEST SELLER">Best Seller</option>
+                            <option value="NEW ARRIVALS">New Arrival</option>
+                        </select>
+                    </div>
+                    <% if(operationFlag =="A"){ %>
+                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+                        <label>Upload Image</label><br>
+                        <input type="file" name="images" single required />
+                    </div>
+                    <%}%>
+        </div>
+        <div class="row">
+            <div class="col-xs-9 col-sm-8 col-lg-12">
+                <input type="submit" name="submit" id="btnSubmit" value="Upload" />
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sidebar').find('ul li').each(function () {
+            if ($(this).attr('id') == 'additem')
+                $(this).addClass('active');
+        });
+
+        $('select[name=type]').on('change', function () {
+            var selType = $('#type option:selected').val();
+            getFilterFragment(selType);
+
+        });
+        $('input[type=radio][name=isOnsale]').change(function () {
+            if ($(this).val() == 'Y') {
+                $('#offerdetails').show();
+                $("input[name=discount]").removeAttr('required');
+            } else {
+                $('#offerdetails').hide();
+                $("input[name=discount]").val('');
+                $("input[name=offerprice]").val('');
+                $("input[name=discount]").removeAttr('required');
+            }
+        });
+
+        $("input[name=discount]").on('blur', function () {
+            var mrp = $('input[name=price]').val();
+            var sale = $('input[name=discount]').val();
+            console.log('mrp : ' + mrp + ' discount :' + sale);
+            var offerprice = (mrp * (100 - sale)) / 100;
+            $('input[name=offerprice]').val(offerprice);
+        });
+
+        $('select[name=tags]').on('change', function () {
+            var selTag = $('#tags option:selected').val();
+            var isSaleEnabled = $('input[name=isOnsale]:checked').val();
+            if (isSaleEnabled == 'N') {
+                $('input[name=imagetag]').val(selTag);
+            } else {
+                $('input[name=imagetag]').val('SALE');
+            }
+        });
+    });
+    function getFilterFragment(params) {
+        console.log('/admin/filters?type=' + params);
+        $.ajax({
+            type: "get",
+            url: '/admin/filters/' + params,
+            cache: false,
+            data: params,
+            dataType: "html",
+            success: function (fragment) {
+                $('#filters').empty();
+                $("#filters").html(fragment);
+            },
+            error: function () {
+            }
+        });
+    }
+</script>
+
+</html>

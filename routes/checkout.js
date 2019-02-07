@@ -5,36 +5,67 @@ var product = require("../model/product");
 
 router.get("/:id", function (req, res, next) {
     var id = [req.params.id];
+    var jsonObject = {};
+    var key = 'checkoutItems';
+    jsonObject[key] = [];
     product.findById(id[0], function (err, item) {
         if (err) {
             console.log("error");
         }
         else {
-            var totalAmount;
-            if (item.isOnSale = "Y") {
-                totalAmount = item.offerPrice
+            var prize = 0;
+            if (item.isOnSale == "Y") {
+                prize = item.offerPrice;
             }
             else {
-                totalAmount = item.prize
+                prize = item.prize;
             }
+
+            var data = {
+                title: item.title,
+                brand: item.brand,
+                prize: prize,
+                count: parseInt(req.query.count),
+                totalprize: parseInt(req.query.count) * prize
+            };
+            jsonObject[key].push(data);
+            checKoutItmeDetails[items] = [];
+            jsonObject.checkoutItems.forEach((item) => {
+                var itemSet = {
+                    id: item.id,
+                    count: item.count
+                }
+                checKoutItmeDetails[items].push(itemSet)
+            });
             date = new Date();
+            count = req.query.count;
             res.render("checkout.html", {
                 id: [id],
-                items: [item],
-                total: totalAmount,
-                count: 1,
+                items: jsonObject,
+                total: prize,
+                count: count,
                 date: date
             });
         }
     });
-
-
 });
 
 router.post("/", function (req, res, next) {
-    console.log(req.body);
-    new customerDetails(req.body).save();
-
+    try {
+        var newCutomer = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            mobile: req.body.mobile,
+            address: req.body.address,
+            total: req.body.zip,
+            orderDate: req.body.orderDate,
+            items: checKoutItmeDetails.Items,
+            zip: req.body.zip,
+        };
+        new customerDetails(newCutomer).save();
+    } catch (error) {
+        res.render("genericerror.html");
+    }
     res.render("checkout.html", {
         id: null,
         items: null,

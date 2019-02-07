@@ -19,6 +19,16 @@
         margin-left: -60px !important;
         height: 100%;
     }
+    .card-custom{
+        max-width: 200px;
+        min-width: 200px;
+    }
+    .product-grid .card-img a{
+        overflow: hidden;
+    }
+    .card-img img{
+        max-height: 200px;
+    }
 </style>
 
 <body class="grey lighten-3">
@@ -27,7 +37,7 @@
     <main>
         <div class="container">
             <div class="row" id="filter-sidebar">
-                <aside class="col-sm-3">
+                <aside class="col-sm-3 mb-3">
                     <p>Filter by</p>
                     <div class="card">
                         <% if(brands){%>
@@ -40,7 +50,7 @@
                                     <form>
                                         <% brands.forEach(function(brand){ %>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" value="brands">
                                             <span class="form-check-label">
                                                 <%= brand %>
                                             </span>
@@ -59,12 +69,14 @@
                             <div class="filter-content">
                                 <div class="card-body">
                                     <% materials.forEach(function(material){ %>
-                                    <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
-                                        <span class="form-check-label">
-                                            <%= material %>
-                                        </span>
-                                    </label>
+                                    <a href="/items/filter/<%=itemType %>/<%= material %>">
+                                        <label class="form-check">
+                                            <input class="form-check-input" type="radio" name="exampleRadio" value="material">
+                                            <span class="form-check-label">
+                                                <%= material %>
+                                            </span>
+                                        </label>
+                                    </a>
                                     <%})%>
                                 </div>
                             </div>
@@ -79,7 +91,7 @@
                                 <div class="card-body">
                                     <% displayTypes.forEach(function(displayType){ %>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <input class="form-check-input" type="radio" name="exampleRadio" value="display">
                                         <span class="form-check-label">
                                             <%= displayType %>
                                         </span>
@@ -91,13 +103,13 @@
                         <%}%>
                     </div>
                 </aside>
-            </div>
 
-            <div class="row">
+            <div class="col-sm-9">
+                <div class="row justify-content-left">
                 <% data.forEach(function(item){ %>
-                <div class="col-xs-4">
+                <div class="card card-custom mx-2 mb-3">
                     <div class="product-grid">
-                        <div class="product-image">
+                        <div class="card-img">
                             <a href="/details/<%= item._id %>">
                                 <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
                                 <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
@@ -105,7 +117,7 @@
 
                             <ul class="social">
                                 <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
-                                <li><a href="/checkout/<%= item._id %>" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                                <li><a href="/checkout/<%= item._id %>?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
                                 <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i
                                             class="fa fa-shopping-cart"></i></a></li>
                             </ul>
@@ -127,7 +139,7 @@
                             <h3 class="title"><a href="#">
                                     <%= item.title  %></a></h3>
                             <div class="price">
-                                <% if(isOnSale="Y"){%>
+                                <% if(item.isOnSale=="Y"){%>
                                 <%= item.offerPrice %>
                                 <span>
                                     <%= item.prize  %></span>
@@ -140,8 +152,9 @@
                 </div>
                 <% });%>
             </div>
+            </div>
         </div>
-
+        </div>
         <!-- <div class='row'>
         <% data.forEach(function(item){ %>
         <div class='col-sm-4'>

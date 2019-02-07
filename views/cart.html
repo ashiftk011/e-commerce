@@ -37,56 +37,106 @@
                     <th style="width:10%"></th>
                 </tr>
             </thead>
-            <tbody>
-                <% data.forEach(function(item){ %>
-                <tr>
-                    <td data-th="Product">
-                        <div class="row">
-                            <div class="col-sm-2 hidden-xs"><img src="../assets/images/<%= item.type %>/<%= item.imageName %>"
-                                    alt="..." class="img-responsive" /></div>
-                            <div class="col-sm-10">
-                                <h4 class="nomargin">
-                                    <%= item.title  %>
-                                </h4>
-                                <p>
-                                    <%= item.description  %>
-                                </p>
+            <form method="POST" action="/checkouts">
+                <tbody>
+                    <% data.forEach(function(item){ %>
+                    <tr>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-sm-2 hidden-xs">
+                                    <img src="../assets/images/<%= item.type %>/<%= item.imageName %>" alt="..." class="img-thumbnail" />
+                                </div>
+                                <div class="col-sm-10">
+                                    <h4 class="nomargin">
+                                        <%= item.title  %>
+                                    </h4>
+                                    <p>
+                                        <%= item.description  %>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td data-th="Price">
-                        <% if(!item.offerPrice){ %>
-                        <%= item.prize  %>
-                        <% } else {%>
-                        <%= item.offerPrice %>
-                        <% }%>
-                    </td>
-                    <td data-th="Quantity">
-                        <input type="number" class="form-control text-center" value="1">
-                    </td>
-                    <td data-th="Subtotal" class="text-center">1.99</td>
-                    <td class="actions" data-th="">
-                        <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
-                        <a href="/cart/remove/<%= item._id %>">
-                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
-                        </a>
-                    </td>
-                </tr>
-                <% });%>
-            </tbody>
-            <tfoot>
-                <tr class="visible-xs">
-                    <td class="text-center"><strong>Total 1.99</strong></td>
-                </tr>
-                <tr>
-                    <!-- <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td> -->
-                    <td colspan="2" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
-                    <td><a href="/checkouts/cart" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
-                </tr>
-            </tfoot>
+                        </td>
+                        <td data-th="Price">
+                            <% if(!item.offerPrice){ %>
+                            <%= item.prize  %>
+                            <% } else {%>
+                            <%= item.offerPrice %>
+                            <% }%>
+                        </td>
+                        <td data-th="Quantity">
+                            <input type="number" name="count" class="form-control text-center" id="<%= item._id %>"
+                                value="1" onblur="myFunction('<%= item.offerPrice %>','<%= item.prize  %>','<%= item._id %>')">
+                        </td>
+                        <td data-th="Subtotal" class="text-center">
+                            <span name="itemPrize" id="<%= item._id %>">
+                                <% if(!item.offerPrice){ %>
+                                <%= item.prize  %>
+                                <% } else {%>
+                                <%= item.offerPrice %>
+                                <% }%></span> </td>
+                        <td class="actions" data-th="">
+                            <a href="/cart">
+                                <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                            </a>
+                            <a href="/cart/remove/<%= item._id %>">
+                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                    <% });%>
+                </tbody>
+                <tfoot>
+                    <!-- <tr class="visible-xs">
+                    <td class="text-center"><strong>Total<span>1.99</span></strong></td>
+                </tr> -->
+                    <tr>
+                        <!-- <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td> -->
+                        <td colspan="2" class="hidden-xs"></td>
+                        
+                        <input type="hidden" value="<%= totalAmount %>" name="hdGrandTotal" id="hdGrandTotal">
+                        <td class="hidden-xs text-center"><strong>Total <span name="totalPrize" id="totalPrize">
+                                    <%= totalAmount %></span></strong></td>
+                        <td><button  type="submit">Checkout
+                            <!--<a href="/checkouts/cart?isDirect=false&&count=<%= cartItemsCount %>" class="btn btn-success btn-block">Checkout-->
+                                <i class="fa fa-angle-right"></i></button></td>
+                    </tr>
+                </tfoot>
+            </form>
         </table>
         <%}%>
     </div>
+
+    <script>
+        function myFunction(offerPrice, prize, id) {
+            var itemPrize;
+            var grandTotal = $('#hdGrandTotal').val();
+            $("input[name=count]").each(function () {
+                if ($(this).attr("id") == id) {
+                    if ($(this).val() > 0) {
+                        if (offerPrice) {
+                            itemPrize = offerPrice * $(this).val();
+                        }
+                        else {
+                            itemPrize = prize * $(this).val();
+                        }
+                        grandTotal = parseInt(grandTotal) + (itemPrize / $(this).val());
+                        $("#totalPrize").text(grandTotal)
+                        $("#hdGrandTotal").val(grandTotal);
+                    }
+                    else {
+                        alert("Quantity of product must be greater than 0");
+                        $(this).val(1);
+                    }
+                }
+            })
+
+            $("span[name=itemPrize]").each(function () {
+                if ($(this).attr("id") == id) {
+                    $(this).text(itemPrize);
+                }
+            })
+        }
+    </script>
+
 </body>
 <% include common/footer.html%>

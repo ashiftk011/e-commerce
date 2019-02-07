@@ -29,31 +29,36 @@
           <div class="p-4">
             <div class="mb-3">
               <h4 class="my-4 h4">
-                <%= title %>
+                <%= item.title %>
               </h4>
             </div>
 
             <p class="lead">
               <span class="mr-1">
+                <% if(item.isOnSale=="Y"){%>
                 <del>
-                  <%= prize %></del>
+                  <%= item.prize %></del>
               </span>
-              <span>600</span>
+              <span>
+                <%= item.offerPrice %></span>
+              <%} else{%>
+              <span>
+                <%= item.prize %></span>
+              <%}%>
             </p>
 
             <p class="lead font-weight-bold">Description</p>
 
             <p>
-              <%= description %>
+              <%= item.description %>
             </p>
 
             <form class="d-flex justify-content-left" method="POST" action="/addtocart/<%= id %>">
               <input type="hidden" name="item-id" value="<%= id %>">
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
               <button class="btn btn-primary btn-md my-0 p" type="submit" id="add-cart">Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
               </button>
-              <a href="/checkout/<%= id %>">
+              <a href="/checkouts/addCart/<%= id %>" id="orederNow">
                 <button type="button" class="btn btn-primary btn-md my-0 p" data-toggle="modal" data-target="#exampleModal">
                   Order Now
                 </button>
