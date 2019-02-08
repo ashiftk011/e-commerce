@@ -4,6 +4,7 @@ var bodyparser = require('body-parser');
 var session = require("express-session");
 var cookieParser = require('cookie-parser');
 var mongoose = require("mongoose");
+var customerDetails = require("./model/customerDetails");
 
 
 var product = require('./model/product');
@@ -94,6 +95,9 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
 app.get("/cart", function (req, res, next) {
     var cartItemsList = [];
     var sessionItems = [];
+    var jsonObject = {};
+    var key = 'checkoutItems';
+    jsonObject[key] = [];
     if (req.session.items) {
         cartItemsList = req.session.items;
         var itemSetcount = 0;
@@ -104,17 +108,31 @@ app.get("/cart", function (req, res, next) {
                     console.log("error");
                 }
                 else {
+                    var prize = 0;
                     sessionItems.push(itemDetails);
                     itemSetcount++;
                     if (itemDetails.isOnSale == "Y") {
                         totalAmount = totalAmount + itemDetails.offerPrice;
+                        prize = itemDetails.offerPrice;
                     }
                     else {
                         totalAmount = totalAmount + itemDetails.prize;
+                        prize = itemDetails.prize;
                     }
 
+                    var data = {
+                        id: itemDetails._id,
+                        title: itemDetails.title,
+                        brand: itemDetails.brand,
+                        prize: prize,
+                        count: 1,
+                        totalprize: 1 * prize
+                    };
+                    jsonObject[key].push(data);
+
                     if (req.session.items.length == itemSetcount)
-                        res.render('cart.html', { data: sessionItems, totalAmount: totalAmount });
+                        res.render('cart.html', { data: sessionItems, totalAmount: totalAmount, jsonResult: jsonObject });
+
                 }
             });
         });
@@ -172,11 +190,10 @@ app.post("/checkouts", function (req, res, next) {
                         title: product.title,
                         brand: product.brand,
                         prize: prize,
-                        count: parseInt(req.body.count[i]),
-                        totalprize: parseInt(req.body.count[i]) * prize
+                        count: parseInt(req.body.jsonResult[i]),
+                        totalprize: parseInt(req.body.jsonResult[i]) * prize
                     };
                     jsonObject[key].push(data);
-                    totalItemCount = totalItemCount + parseInt(req.body.count[i]);
                     i++;
                     count--;
                     date = new Date();
@@ -187,6 +204,7 @@ app.post("/checkouts", function (req, res, next) {
                                 id: item.id,
                                 count: item.count
                             };
+                            totalItemCount+=item.count;
                             checKoutItmeDetails[items].push(itemSet);
                         });
                         res.render("checkout.html", {
@@ -202,6 +220,25 @@ app.post("/checkouts", function (req, res, next) {
         })
     }
 })
+
+
+app.post("/purchase", function (req, res, next) {
+    var newCutomer = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        mobile: req.body.mobile,
+        address: req.body.address,
+        total: req.body.zip,
+        orderDate: req.body.orderDate,
+        items: checKoutItmeDetails.Items,
+        zip: req.body.zip,
+        isDeliverd: "N"
+    };
+    new customerDetails(newCutomer).save();
+    req.session.items = [];
+    cartItemsCount = 0
+    res.render("sucess-page.html");
+});
 
 app.listen(port, function () {
 

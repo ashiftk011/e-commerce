@@ -13,6 +13,7 @@ var CustomerDetails = new Schema({
     count: { type: Number, require: true }
   }],
   zip: { type: Number },
+  isDeliverd: { type: String, require: true }
 });
 
 module.exports = mongoos.model('customerDetails', CustomerDetails)
