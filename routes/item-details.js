@@ -17,7 +17,7 @@ router.get('/:id', function (req, res, nex) {
             else if (item.type == "watch") {
                 imagePath = "../assets/images/watch/" + item.imageName;
             }
-            else if (item.type == "dress") {
+            else if (item.type == "dresses") {
                 imagePath = "../assets/images/dresses/" + item.imageName;
             }
             res.render('item-details.html', { item: item, imagePath: imagePath });

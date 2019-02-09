@@ -76,7 +76,7 @@
                             <% }%></span>
                     </td>
                     <td class="actions" data-th="">
-                        <a href="/cart">
+                        <a href="/<%= item._id %>" class="refresh">
                             <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
                         </a>
                         <a href="/cart/remove/<%= item._id %>">
@@ -91,7 +91,7 @@
                     <!-- <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td> -->
                     <td colspan="2" class="hidden-xs"></td>
 
-                    
+
                     <td class="hidden-xs text-center"><strong>Total <span name="totalPrize" id="totalPrize">
                                 <%= totalAmount %></span></strong></td>
                     <td>
@@ -101,7 +101,7 @@
                             <%})%>
                             <input type="hidden" value="<%= totalAmount %>" name="hdGrandTotal" id="hdGrandTotal">
                             <button type="submit" class="btn btn-success btn-block">Checkout
-                            <!-- <a href="#" class="btn btn-success btn-block">Checkout--> -->
+                                <!-- <a href="#" class="btn btn-success btn-block">Checkout--> -->
                                 <i class="fa fa-angle-right"></i></button>
                         </form>
                     </td>
@@ -114,49 +114,56 @@
     </div>
 
     <script>
-        function myFunction(itemID,offerPrice, prize, id) {
-            var itemPrize;
-            var grandTotal = 0;
-            var count = 1;
-            $("input[name=count]").each(function () {
-                if ($(this).attr("id") == id) {
-                    if ($(this).val() > 0) {
-                        if (offerPrice) {
-                            itemPrize = offerPrice * $(this).val();
+        
+            function myFunction(itemID, offerPrice, prize, id) {
+                var itemPrize;
+                var grandTotal = 0;
+                var count = 1;
+                $("input[name=count]").each(function () {
+                    if ($(this).attr("id") == id) {
+                        if ($(this).val() > 0) {
+                            if (offerPrice) {
+                                itemPrize = offerPrice * $(this).val();
+                            }
+                            else {
+                                itemPrize = prize * $(this).val();
+                            }
                         }
                         else {
-                            itemPrize = prize * $(this).val();
+                            alert("Quantity of product must be greater than 0");
+                            $(this).val(1);
                         }
+                        count = $(this).val();
                     }
-                    else {
-                        alert("Quantity of product must be greater than 0");
-                        $(this).val(1);
+                })
+
+                $("input[name=hditemTotal]").each(function () {
+                    alert($(this).val());
+                })
+
+                $("input[name=jsonResult]").each(function () {
+                    if ($(this).attr("id") == "js" + itemID) {
+                        $(this).val(count);
                     }
-                    count = $(this).val();
-                }
-            })
-
-            $("input[name=hditemTotal]").each(function () {
-                alert($(this).val());
-            })
-
-            $("input[name=jsonResult]").each(function () {
-                if ($(this).attr("id") == "js" + itemID) {
-                    $(this).val(count);
-                }
-            })
+                })
 
 
-            $("span[name=itemPrize]").each(function () {
-                if ($(this).attr("id") == id) {
-                    $(this).text(itemPrize);
-                }
-                var value = $(this).text()
-                grandTotal = grandTotal + parseInt(value);
-            })
-            $("#totalPrize").text(grandTotal);
-            $("#hdGrandTotal").text(grandTotal);
-        }
+                $("span[name=itemPrize]").each(function () {
+                    if ($(this).attr("id") == id) {
+                        $(this).text(itemPrize);
+                    }
+                    var value = $(this).text()
+                    grandTotal = grandTotal + parseInt(value);
+                })
+                $("#totalPrize").text(grandTotal);
+                $("#hdGrandTotal").val(grandTotal);
+            }
+
+            $('body').on('click', 'a.refresh', function (e) {
+                var id = $(this).attr("href").replace("/", "");
+                e.preventDefault();
+                $("#" + id).val("1");
+            });
     </script>
 
 </body>
