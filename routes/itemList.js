@@ -4,30 +4,15 @@ var product = require('../model/product');
 var lookupValue = require('../model/lookupValue');
 
 var itemsList;
-//Sleected Filter item set
-var fltrBrands;
-var fltrMaterial;
-var fltrDisplayType;
-var fltrCategory;
-var fltrSize;
-var fltrItemType;
-
-// filter Type List
-var brands;
-var material;
-var displayType;
-var category;
-var size;
-var itemType;
-
+var selectedItemType;
 router.get("/:type", function (req, res, next) {
-    fltrBrands = [];
-    fltrMaterial = [];
-    fltrDisplayType = [];
-    fltrCategory = [];
-    fltrSize = [];
-    fltrItemType = [];
     try {
+        var brands;
+        var material;
+        var displayType;
+        var category;
+        var size;
+        var itemType;
         var itemFilterContents;
         lookupValue.find({}, function (err, lookupValue) {
             itemFilterContents = lookupValue;
@@ -39,7 +24,7 @@ router.get("/:type", function (req, res, next) {
                 else {
                     itemsList = items;
                     itemType = req.params.type;
-
+                    selectedItemType = itemType
                     if (itemType == "perfumes") {
                         imagePath = "../assets/images/perfume/";
                     }
@@ -73,33 +58,55 @@ router.get("/:type", function (req, res, next) {
     }
 });
 
-router.get("/items/brand", function (req, res, next) {
+router.post("/items/brand", function (req, res, next) {
     var items = [];
-    var data={}
-    // var key = 'items';
-    // items[key]=[];
-    if (!fltrBrands.find((br) => br == req.query.brand)) {
-        fltrBrands=[];
-        fltrBrands.push(req.query.brand);
-        for (var i = 0; i < fltrBrands.length; i++) {
-            var fltritem = itemsList.filter((fltr) => fltr.brand == fltrBrands[i]);
-             data = {
-                type: fltritem[0].type,
-                _id: fltritem[0]._id,
-                imageName: fltritem[0].imageName,
-                imageTag: fltritem[0].imageTag,
-                discount: fltritem[0].discount,
-                offerPrice: fltritem[0].offerPrice,
-                prize: fltritem[0].prize,
-                title:fltritem[0].title
+
+    var fltritem = [];
+    fltrBrands = req.body.brand;
+    if (fltrBrands.length == 0) {
+        product.find({ "type": selectedItemType }, function (err, allItems, next) {
+            if (err) {
+                res.send(err);
             }
-            console.log("###########################..........................."+data.imageName)
-            items.push(data);
-        }
-        //console.log(items);
+            else {
+                allItems.forEach(item => {
+                    var data = {};
+                    data = {
+                        type: item.type,
+                        _id: item._id,
+                        imageName: item.imageName,
+                        imageTag: item.imageTag,
+                        discount: item.discount,
+                        offerPrice: item.offerPrice,
+                        prize: item.prize,
+                        title: item.title
+                    }
+                    items.push(data);
+                });
+                res.json(items)
+            }
+        });
     }
-    
-    res.json(items)
+    else {
+        for (var i = 0; i < fltrBrands.length; i++) {
+            fltritem = itemsList.filter((fltr) => fltr.brand == fltrBrands[i]);
+            fltritem.forEach(item => {
+                var data = {};
+                data = {
+                    type: item.type,
+                    _id: item._id,
+                    imageName: item.imageName,
+                    imageTag: item.imageTag,
+                    discount: item.discount,
+                    offerPrice: item.offerPrice,
+                    prize: item.prize,
+                    title: item.title
+                }
+                items.push(data);
+            });
+        }
+        res.json(items)
+    }
 })
 
 router.post("/category", function (req, res, next) {
@@ -131,13 +138,5 @@ router.post("/size", function (req, res, next) {
     });
 })
 
-
-var ItemsFilterState = {
-    brand: { type: Array },
-    material: { type: Array },
-    size: { type: Array },
-    displayType: { type: Array },
-    catogery: { Type: Array }
-}
 
 module.exports = router;

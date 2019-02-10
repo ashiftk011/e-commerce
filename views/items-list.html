@@ -49,7 +49,7 @@
                             <div class="filter-content">
                                 <div class="card-body">
                                     <% brands.forEach(function(brand){ %>
-                                    <a href="/brand?brand=<%= brand %>" class="brand">
+                                    <a href="/brand" class="brand">
                                         <!-- <form  method="POST" action="/items/brand"> -->
 
                                         <label class="form-check">
@@ -171,7 +171,8 @@
                                     <ul class="social">
                                         <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
                                         <li><a href="/checkout/<%= item._id %>?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
-                                        <li><a href="/addtocart/<%= item.type %>/<%= item._id%>" class="cart" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="/addtocart/<%= item.type %>/<%= item._id%>" class="cart" data-tip="Add to Cart"><i
+                                                    class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                     <span class="product-new-label">
                                         <%= item.imageTag %></span>
@@ -210,16 +211,32 @@
     </main>
 
     <script type="text/javascript">
-
-        var isSelected = false;
+        // brand Click
+        var brandSelected = false;
         $('body').on("click", "a.brand", function (e) {
-            if (isSelected == false) {
-                var link = 'items' + $(this).attr("href");
-                fetchByAjax(link, successhandler, failurehandler);
-                isSelected = true;
+            var brand = [];
+            var link = 'items' + $(this).attr("href");
+
+            $.each($("input[name='brand']:checked"), function () {
+                brand.push($(this).val());
+                brandSelected = true;
+            })
+            if (brand.length > 0) {
+                var data = {
+                    brand: brand
+                }
+                postAjax(link, filterSuccessHandler, failurehandler, data);
+
+            }
+            if (brandSelected = true && brand.length == 0) {
+                var data = {
+                    brand: null
+                }
+                postAjax(link, filterSuccessHandler, failurehandler, data);
             }
         })
 
+        //add to cart 
         $('body').on("click", "a.cart", function (e) {
             e.preventDefault();
             $.ajax({
@@ -238,31 +255,14 @@
             });
         })
 
-        function fetchByAjax(serviceUrl, successhandler, failurehandler) {
-
-            $.ajax({
-                type: "get",
-                url: serviceUrl,
-                cache: false,
-                //data: params,s
-                success: function (response) {
-                    successhandler(response);
-                },
-                error: function () {
-                    failurehandler();
-                }
-            });
-        }
-
+        // filter post request
         function postAjax(serviceUrl, successhandler, failurehandler, params) {
-            var data = JSON.parse(params);
             $.ajax({
                 type: "post",
                 url: serviceUrl,
-                data: data,
-                cache: false,
-                success: function () {
-                    successhandler();
+                data: params,
+                success: function (response) {
+                    filterSuccessHandler(response);
                 },
                 error: function () {
                     failurehandler();
@@ -270,13 +270,19 @@
             })
 
         }
-
-        function successhandler(resp) {
-            var div = `<div class="row justify-content-left" id="content">`;
+        // filter sucess binding
+        function filterSuccessHandler(resp) {
+            var div;
             $.each(resp, function (i) {
-                div += `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
-                                <div class="card-img">`;
                 var count = 0;
+                if (i != 0)
+                    div += `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
+                                <div class="card-img">`;
+                else {
+                    div = `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
+                                <div class="card-img">`;
+                }
+
                 if ($(this)[count].type == 'perfume') {
                     path = "../assets/images/perfume/";
                 }
@@ -300,7 +306,7 @@
                                     </ul><span class="product-new-label">`
                 var imgTag = $(this)[count].imageTag;
                 if ($(this)[count].discount) {
-                    var discountLabel = `</span><span class="product-discount-label">` + $(this)[count].discount + '</span>'
+                    var discountLabel = `</span><span class="product-discount-label">` + $(this)[count].discount + '%</span>'
                 }
                 var rating = `</div><ul class="rating">
                                     <li class="fa fa-star"></li>
@@ -321,9 +327,12 @@
                 }
                 closingTag = ` </div>
                                 </div>
-                            </div>`;
+                            </div></div>`;
                 if (imgTag && discountLabel) {
                     div = div + img + toolTip + imgTag + discountLabel + rating + prize + closingTag;
+                }
+                else if (imgTag) {
+                    div = div + img + toolTip + imgTag + rating + prize + closingTag;
                 }
                 else {
                     div = div + img + toolTip + rating + prize + closingTag;
@@ -331,10 +340,11 @@
 
             });
             $('#content').empty();
-            div += "</div>";
             $('#content').html(div);
             //     
+
         }
+        
         function failurehandler(resp) {
             alert(resp);
         }
