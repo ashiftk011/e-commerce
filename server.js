@@ -87,7 +87,7 @@ app.get('/addtocart/:type/:id', function (req, res, next) {
     req.session.items = req.session.items.filter(itemId => itemId != id)
     req.session.items.push(id);
     cartItemsCount = req.session.items.length;
-    res.redirect("/items/" + type);
+    res.json(cartItemsCount);
 });
 
 //cart

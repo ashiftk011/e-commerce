@@ -11,6 +11,7 @@
     <link href="../assets/css/mdb.min.css" rel="stylesheet">
     <link href="../assets/css/style.min.css" rel="stylesheet">
     <link href="../assets/styles/minstyle.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 <style>
@@ -47,12 +48,80 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
+                                    <% brands.forEach(function(brand){ %>
+                                    <a href="/brand?brand=<%= brand %>" class="brand">
+                                        <!-- <form  method="POST" action="/items/brand"> -->
+
+                                        <label class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="<%= brand %>" name="brand">
+                                            <span class="form-check-label">
+                                                <%= brand %>
+                                            </span>
+                                        </label>
+
+                                        <!-- <button type="submit">Filer Brand</button>
+                                        </form> -->
+                                    </a>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </article>
+                        <% } if(displayTypes){%>
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Display Types </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
                                     <form>
-                                        <% brands.forEach(function(brand){ %>
+                                        <% displayTypes.forEach(function(displayType){ %>
                                         <label class="form-check">
                                             <input class="form-check-input" type="checkbox" value="brands">
                                             <span class="form-check-label">
-                                                <%= brand %>
+                                                <%= displayType %>
+                                            </span>
+                                        </label>
+                                        <% }) %>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                        <% } if(size){%>
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Size </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <form action="/items/size" method="POST">
+                                        <% size.forEach(function(sizes){ %>
+                                        <label class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="<%= sizes %>" name="size">
+                                            <span class="form-check-label">
+                                                <%= sizes %>
+                                            </span>
+                                        </label>
+                                        <% }) %>
+                                        <button type="submit">size</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </article>
+                        <%}if(materials){%>
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Material </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <form>
+                                        <% materials.forEach(function(material){ %>
+                                        <label class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="brands">
+                                            <span class="form-check-label">
+                                                <%= material %>
                                             </span>
                                         </label>
                                         <% }) %>
@@ -61,120 +130,216 @@
                                 </div>
                             </div>
                         </article>
-                        <% }if(materials){ %>
+                        <%}if(category){%>
                         <article class="card-group-item">
                             <header class="card-header">
-                                <h6 class="title">Material</h6>
+                                <h6 class="title">Category </h6>
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <% materials.forEach(function(material){ %>
-                                    <a href="/items/filter/<%=itemType %>/<%= material %>">
+                                    <form action="/items/category" method="POST">
+                                        <% category.forEach(function(cat){ %>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadio" value="material">
+                                            <input class="form-check-input" type="checkbox" name="cat" value="<%= cat %>">
                                             <span class="form-check-label">
-                                                <%= material %>
+                                                <%= cat %>
                                             </span>
                                         </label>
-                                    </a>
-                                    <%})%>
+                                        <% }) %>
+                                        <button type="submit"> category</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </article>
                         <%}%>
-                        <% if(displayTypes){ %>
-                        <article class="card-group-item">
-                            <header class="card-header">
-                                <h6 class="title">Display</h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <% displayTypes.forEach(function(displayType){ %>
-                                    <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="display">
-                                        <span class="form-check-label">
-                                            <%= displayType %>
-                                        </span>
-                                    </label>
-                                    <%})%>
-                                </div>
-                            </div>
-                        </article>
-                        <%}%>
+
                     </div>
                 </aside>
 
-            <div class="col-sm-9">
-                <div class="row justify-content-left">
-                <% data.forEach(function(item){ %>
-                <div class="card card-custom mx-2 mb-3">
-                    <div class="product-grid">
-                        <div class="card-img">
-                            <a href="/details/<%= item._id %>">
-                                <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
-                                <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
-                            </a>
+                <div class="col-sm-9">
+                    <div class="row justify-content-left" id="content">
+                        <% data.forEach(function(item){ %>
+                        <div class="card card-custom mx-2 mb-3">
+                            <div class="product-grid">
+                                <div class="card-img">
+                                    <a href="/details/<%= item._id %>">
+                                        <img class="pic-1" src="<%= imagePath %><%= item.imageName %>">
+                                        <!-- <img class="pic-2" src="http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg"> -->
+                                    </a>
 
-                            <ul class="social">
-                                <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
-                                <li><a href="/checkout/<%= item._id %>?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
-                                <li><a href="/addtocart/<%= item.type %>/<%= item._id %> " data-tip="Add to Cart"><i
-                                            class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                            <span class="product-new-label">
-                                <%= item.imageTag %></span>
-                            <% if(item.discount){%>
-                            <span class="product-discount-label">
-                                <%= item.discount %>%</span>
-                            <%}%>
-                        </div>
-                        <ul class="rating">
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star disable"></li>
-                        </ul>
-                        <div class="product-content">
-                            <h3 class="title"><a href="#">
-                                    <%= item.title  %></a></h3>
-                            <div class="price">
-                                <% if(item.isOnSale=="Y"){%>
-                                <%= item.offerPrice %>
-                                <span>
-                                    <%= item.prize  %></span>
-                                <%}else{%>
-                                <%= item.prize  %>
-                                <%}%>
+                                    <ul class="social">
+                                        <li><a href="/details/<%= item._id %>" data-tip="Details"><i class="fa fa-list"></i></a></li>
+                                        <li><a href="/checkout/<%= item._id %>?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                                        <li><a href="/addtocart/<%= item.type %>/<%= item._id%>" class="cart" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                    <span class="product-new-label">
+                                        <%= item.imageTag %></span>
+                                    <% if(item.discount){%>
+                                    <span class="product-discount-label">
+                                        <%= item.discount %>%</span>
+                                    <%}%>
+                                </div>
+                                <ul class="rating">
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star disable"></li>
+                                </ul>
+                                <div class="product-content">
+                                    <h3 class="title"><a href="#">
+                                            <%= item.title  %></a></h3>
+                                    <div class="price">
+                                        <% if(item.isOnSale=="Y"){%>
+                                        <%= item.offerPrice %>
+                                        <span>
+                                            <%= item.prize  %></span>
+                                        <%}else{%>
+                                        <%= item.prize  %>
+                                        <%}%>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <% });%>
                     </div>
                 </div>
-                <% });%>
             </div>
-            </div>
-        </div>
-        </div>
-        <!-- <div class='row'>
-        <% data.forEach(function(item){ %>
-        <div class='col-sm-4'>
-            <div class='thumbnail'>
-                <a href='/details/<%= item._id %>'>
-                    <img src="<%= imagePath %><%= item.imageName %>">
-                    <br>
-                    <p>
-                        <strong>
-                            <%= item.title  %> </strong><br>
-                        <strong>
-                            <%= item.prize  %> </strong>
-                    </p>
-                </a>
-            </div>
-        </div>
-        <% });%>
-    </div>-->
         </div>
     </main>
+
+    <script type="text/javascript">
+
+        var isSelected = false;
+        $('body').on("click", "a.brand", function (e) {
+            if (isSelected == false) {
+                var link = 'items' + $(this).attr("href");
+                fetchByAjax(link, successhandler, failurehandler);
+                isSelected = true;
+            }
+        })
+
+        $('body').on("click", "a.cart", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "get",
+                url: $(this).attr("href"),
+                //data: params,s
+                success: function (response) {
+                    $("#cart-Count").empty();
+                    var div = '<span class="badge red z-depth-1 mr-1">' + response + `</span><i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>`;
+                    $("#cart-Count").html(div);
+                },
+                error: function () {
+                    failurehandler();
+                }
+            });
+        })
+
+        function fetchByAjax(serviceUrl, successhandler, failurehandler) {
+
+            $.ajax({
+                type: "get",
+                url: serviceUrl,
+                cache: false,
+                //data: params,s
+                success: function (response) {
+                    successhandler(response);
+                },
+                error: function () {
+                    failurehandler();
+                }
+            });
+        }
+
+        function postAjax(serviceUrl, successhandler, failurehandler, params) {
+            var data = JSON.parse(params);
+            $.ajax({
+                type: "post",
+                url: serviceUrl,
+                data: data,
+                cache: false,
+                success: function () {
+                    successhandler();
+                },
+                error: function () {
+                    failurehandler();
+                }
+            })
+
+        }
+
+        function successhandler(resp) {
+            var div = `<div class="row justify-content-left" id="content">`;
+            $.each(resp, function (i) {
+                div += `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
+                                <div class="card-img">`;
+                var count = 0;
+                if ($(this)[count].type == 'perfume') {
+                    path = "../assets/images/perfume/";
+                }
+                else if ($(this)[count].type == 'watch') {
+                    path = "../assets/images/watch/";
+                }
+                else if ($(this)[count].type == 'dresses') {
+                    path = "../assets/images/dresses/";
+                }
+                var img = '<img class="pic-1" src=' + path + $(this)[count].imageName + ">";
+
+                var toolTip = `<ul class="social">
+                                        <li><a href="/details/`+
+                    $(this)[count]._id +
+                    `" data-tip="Details"><i class="fa fa-list"></i></a></li>
+                                        <li><a href="/checkout/`
+                    + $(this)[count]._id +
+                    `?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                                        <li><a href="/addtocart/`+ $(this)[count].type + `/` + $(this)[count]._id + `class="cart" " data-tip="Add to Cart" class="addtocart"><i
+                                                    class="fa fa-shopping-cart"></i></a></li>
+                                    </ul><span class="product-new-label">`
+                var imgTag = $(this)[count].imageTag;
+                if ($(this)[count].discount) {
+                    var discountLabel = `</span><span class="product-discount-label">` + $(this)[count].discount + '</span>'
+                }
+                var rating = `</div><ul class="rating">
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star"></li>
+                                    <li class="fa fa-star disable"></li>
+                                </ul>
+                                <div class="product-content">
+                                    <h3 class="title"><a href="#">`+ $(this)[count].title + `</a></h3>
+                                    <div class="price">`;
+                var prize
+                if ($(this)[count].offerPrice) {
+                    prize = $(this)[count].offerPrice + '<span>' + $(this)[count].prize + '</span>';
+                }
+                else {
+                    prize = $(this)[count].prize;
+                }
+                closingTag = ` </div>
+                                </div>
+                            </div>`;
+                if (imgTag && discountLabel) {
+                    div = div + img + toolTip + imgTag + discountLabel + rating + prize + closingTag;
+                }
+                else {
+                    div = div + img + toolTip + rating + prize + closingTag;
+                }
+
+            });
+            $('#content').empty();
+            div += "</div>";
+            $('#content').html(div);
+            //     
+        }
+        function failurehandler(resp) {
+            alert(resp);
+        }
+    </script>
+
 </body>
 
 </html>
