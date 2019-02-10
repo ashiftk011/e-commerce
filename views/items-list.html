@@ -49,18 +49,13 @@
                             <div class="filter-content">
                                 <div class="card-body">
                                     <% brands.forEach(function(brand){ %>
-                                    <a href="/brand" class="brand">
-                                        <!-- <form  method="POST" action="/items/brand"> -->
-
+                                    <a href="/brand" class="filter">
                                         <label class="form-check">
                                             <input class="form-check-input" type="checkbox" value="<%= brand %>" name="brand">
                                             <span class="form-check-label">
                                                 <%= brand %>
                                             </span>
                                         </label>
-
-                                        <!-- <button type="submit">Filer Brand</button>
-                                        </form> -->
                                     </a>
                                     <% }) %>
                                 </div>
@@ -73,17 +68,18 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <form>
+                                    <a href="/brand" class="filter">
                                         <% displayTypes.forEach(function(displayType){ %>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="brands">
+                                            <input class="form-check-input" type="checkbox" value="<%= displayType %>"
+                                                name="displayType">
                                             <span class="form-check-label">
                                                 <%= displayType %>
                                             </span>
                                         </label>
                                         <% }) %>
 
-                                    </form>
+                                    </a>
                                 </div>
                             </div>
                         </article>
@@ -116,16 +112,17 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <form>
+                                    <a href="/brand" class="filter">
                                         <% materials.forEach(function(material){ %>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="brands">
+                                            <input class="form-check-input" type="checkbox" value="<%= material %>"
+                                                name="material">
                                             <span class="form-check-label">
                                                 <%= material %>
                                             </span>
                                         </label>
                                         <% }) %>
-                                    </form>
+                                    </a>
 
                                 </div>
                             </div>
@@ -211,104 +208,122 @@
     </main>
 
     <script type="text/javascript">
-        // brand Click
-        var brandSelected = false;
-        $('body').on("click", "a.brand", function (e) {
-            var brand = [];
-            var link = 'items' + $(this).attr("href");
+        $(document).ready(function () {
+            // brand Click
+            var brandSelected = false;
+            $('body').on("click", "a.filter", function (e) {
+                var brand = [];
+                var displayType = [];
+                var material = [];
+                var link = 'items' + $(this).attr("href");
 
-            $.each($("input[name='brand']:checked"), function () {
-                brand.push($(this).val());
-                brandSelected = true;
+                $.each($("input[name='brand']:checked"), function () {
+                    brand.push($(this).val());
+                })
+
+                $.each($("input[name='displayType']:checked"), function () {
+                    displayType.push($(this).val());
+                })
+
+                $.each($("input[name='material']:checked"), function () {
+                    material.push($(this).val());
+                })
+
+                if (brand.length > 0 || displayType.length > 0 || material.length > 0) {
+                    var data = {
+                        brand: brand,
+                        displayType: displayType,
+                        material: material
+                    }
+                    postAjax(link, filterSuccessHandler, failurehandler, data);
+
+                }
+                if (brand.length == 0 && displayType.length == 0 && material.length == 0) {
+                    var data = {
+                        brand: null,
+                        displayType: null,
+                        material: null
+                    }
+                    postAjax(link, filterSuccessHandler, failurehandler, data);
+                }
             })
-            if (brand.length > 0) {
-                var data = {
-                    brand: brand
-                }
-                postAjax(link, filterSuccessHandler, failurehandler, data);
 
-            }
-            if (brandSelected = true && brand.length == 0) {
-                var data = {
-                    brand: null
-                }
-                postAjax(link, filterSuccessHandler, failurehandler, data);
-            }
-        })
 
-        //add to cart 
-        $('body').on("click", "a.cart", function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: "get",
-                url: $(this).attr("href"),
-                //data: params,s
-                success: function (response) {
-                    $("#cart-Count").empty();
-                    var div = '<span class="badge red z-depth-1 mr-1">' + response + `</span><i class="fas fa-shopping-cart"></i>
+            //add to cart 
+
+            $(".cart").on("click", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "get",
+                    url: $(this).attr("href"),
+                    //data: params,s
+                    success: function (response) {
+                        $("#cart-Count").empty();
+                        var div = '<span class="badge red z-depth-1 mr-1">' + response + `</span><i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>`;
-                    $("#cart-Count").html(div);
-                },
-                error: function () {
-                    failurehandler();
-                }
-            });
-        })
-
-        // filter post request
-        function postAjax(serviceUrl, successhandler, failurehandler, params) {
-            $.ajax({
-                type: "post",
-                url: serviceUrl,
-                data: params,
-                success: function (response) {
-                    filterSuccessHandler(response);
-                },
-                error: function () {
-                    failurehandler();
-                }
+                        $("#cart-Count").html(div);
+                    },
+                    error: function () {
+                        failurehandler();
+                    }
+                });
             })
 
-        }
-        // filter sucess binding
-        function filterSuccessHandler(resp) {
-            var div;
-            $.each(resp, function (i) {
-                var count = 0;
-                if (i != 0)
-                    div += `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
-                                <div class="card-img">`;
-                else {
-                    div = `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
-                                <div class="card-img">`;
-                }
+            // filter post request
+            function postAjax(serviceUrl, successhandler, failurehandler, params) {
+                $.ajax({
+                    type: "post",
+                    url: serviceUrl,
+                    data: params,
+                    success: function (response) {
+                        filterSuccessHandler(response);
+                    },
+                    error: function () {
+                        failurehandler();
+                    }
+                })
 
-                if ($(this)[count].type == 'perfume') {
-                    path = "../assets/images/perfume/";
-                }
-                else if ($(this)[count].type == 'watch') {
-                    path = "../assets/images/watch/";
-                }
-                else if ($(this)[count].type == 'dresses') {
-                    path = "../assets/images/dresses/";
-                }
-                var img = '<img class="pic-1" src=' + path + $(this)[count].imageName + ">";
+            }
+            // filter sucess binding
+            function filterSuccessHandler(resp) {
+                var div;
 
-                var toolTip = `<ul class="social">
+                $.each(resp, function (i) {
+                    var count = 0;
+                    if (i != 0)
+                        div += `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
+                                <div class="card-img">`;
+                    else {
+                        div = `<div class="card card-custom mx-2 mb-3"><div class="product-grid">
+                                <div class="card-img">`;
+                    }
+
+                    if ($(this)[count].type == 'perfume') {
+                        path = "../assets/images/perfume/";
+                    }
+                    else if ($(this)[count].type == 'watch') {
+                        path = "../assets/images/watch/";
+                    }
+                    else if ($(this)[count].type == 'dresses') {
+                        path = "../assets/images/dresses/";
+                    }
+                    var img = '<img class="pic-1" src=' + path + $(this)[count].imageName + ">";
+
+                    var toolTip = `<ul class="social">
                                         <li><a href="/details/`+
-                    $(this)[count]._id +
-                    `" data-tip="Details"><i class="fa fa-list"></i></a></li>
+                        $(this)[count]._id +
+                        `" data-tip="Details"><i class="fa fa-list"></i></a></li>
                                         <li><a href="/checkout/`
-                    + $(this)[count]._id +
-                    `?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
+                        + $(this)[count]._id +
+                        `?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
                                         <li><a href="/addtocart/`+ $(this)[count].type + `/` + $(this)[count]._id + `class="cart" " data-tip="Add to Cart" class="addtocart"><i
                                                     class="fa fa-shopping-cart"></i></a></li>
                                     </ul><span class="product-new-label">`
-                var imgTag = $(this)[count].imageTag;
-                if ($(this)[count].discount) {
-                    var discountLabel = `</span><span class="product-discount-label">` + $(this)[count].discount + '%</span>'
-                }
-                var rating = `</div><ul class="rating">
+                    var imgTag = $(this)[count].imageTag;
+                    if ($(this)[count].discount) {
+                        var discountLabel = `</span><span class="product-discount-label">` + $(this)[count].discount + '%</span>'
+                    }
+                    var rating = `</div><ul class="rating">
                                     <li class="fa fa-star"></li>
                                     <li class="fa fa-star"></li>
                                     <li class="fa fa-star"></li>
@@ -318,36 +333,37 @@
                                 <div class="product-content">
                                     <h3 class="title"><a href="#">`+ $(this)[count].title + `</a></h3>
                                     <div class="price">`;
-                var prize
-                if ($(this)[count].offerPrice) {
-                    prize = $(this)[count].offerPrice + '<span>' + $(this)[count].prize + '</span>';
-                }
-                else {
-                    prize = $(this)[count].prize;
-                }
-                closingTag = ` </div>
+                    var prize
+                    if ($(this)[count].offerPrice) {
+                        prize = $(this)[count].offerPrice + '<span>' + $(this)[count].prize + '</span>';
+                    }
+                    else {
+                        prize = $(this)[count].prize;
+                    }
+                    closingTag = ` </div>
                                 </div>
                             </div></div>`;
-                if (imgTag && discountLabel) {
-                    div = div + img + toolTip + imgTag + discountLabel + rating + prize + closingTag;
-                }
-                else if (imgTag) {
-                    div = div + img + toolTip + imgTag + rating + prize + closingTag;
-                }
-                else {
-                    div = div + img + toolTip + rating + prize + closingTag;
-                }
+                    if (imgTag && discountLabel) {
+                        div = div + img + toolTip + imgTag + discountLabel + rating + prize + closingTag;
+                    }
+                    else if (imgTag) {
+                        div = div + img + toolTip + imgTag + rating + prize + closingTag;
+                    }
+                    else {
+                        div = div + img + toolTip + rating + prize + closingTag;
+                    }
 
-            });
-            $('#content').empty();
-            $('#content').html(div);
-            //     
+                });
+                $('#content').empty();
+                $('#content').html(div);
+                //     
 
-        }
-        
-        function failurehandler(resp) {
-            alert(resp);
-        }
+            }
+
+            function failurehandler(resp) {
+                alert(resp);
+            }
+        })
     </script>
 
 </body>

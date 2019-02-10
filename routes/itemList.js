@@ -63,12 +63,15 @@ router.post("/items/brand", function (req, res, next) {
 
     var fltritem = [];
     fltrBrands = req.body.brand;
-    if (fltrBrands.length == 0) {
+    fltrDisplayType = req.body.displayType;
+    fltrMaterial = req.body.material;
+    if (!fltrBrands && !fltrDisplayType && !fltrMaterial) {
         product.find({ "type": selectedItemType }, function (err, allItems, next) {
             if (err) {
                 res.send(err);
             }
             else {
+                itemsList = allItems;
                 allItems.forEach(item => {
                     var data = {};
                     data = {
@@ -88,22 +91,87 @@ router.post("/items/brand", function (req, res, next) {
         });
     }
     else {
-        for (var i = 0; i < fltrBrands.length; i++) {
-            fltritem = itemsList.filter((fltr) => fltr.brand == fltrBrands[i]);
-            fltritem.forEach(item => {
-                var data = {};
-                data = {
-                    type: item.type,
-                    _id: item._id,
-                    imageName: item.imageName,
-                    imageTag: item.imageTag,
-                    discount: item.discount,
-                    offerPrice: item.offerPrice,
-                    prize: item.prize,
-                    title: item.title
+        var allFltrItems = [];
+        var allDisplFltr = [];
+        var allMaterialFltr = [];
+        if (fltrBrands) {
+            allFltrItems = [];
+            for (var i = 0; i < fltrBrands.length; i++) {
+                fltritem = itemsList.filter((fltr) => fltr.brand == fltrBrands[i]);
+                fltritem.forEach(item => {
+                    allFltrItems.push(item);
+                    var data = {};
+                    data = {
+                        type: item.type,
+                        _id: item._id,
+                        imageName: item.imageName,
+                        imageTag: item.imageTag,
+                        discount: item.discount,
+                        offerPrice: item.offerPrice,
+                        prize: item.prize,
+                        title: item.title
+                    }
+                    items.push(data);
+                });
+            }
+
+        }
+        if (fltrDisplayType) {
+            items = [];
+            var fltrDispitem = [];
+            for (var i = 0; i < fltrDisplayType.length; i++) {
+                if (allFltrItems && allFltrItems.length != 0) {
+                    fltrDispitem = allFltrItems.filter((fltr) => fltr.display == fltrDisplayType[i]);
                 }
-                items.push(data);
-            });
+                else
+                    fltrDispitem = itemsList.filter((fltr) => fltr.display == fltrDisplayType[i]);
+
+                fltrDispitem.forEach(item => {
+                    allDisplFltr.push(item);
+                    var data = {};
+                    data = {
+                        type: item.type,
+                        _id: item._id,
+                        imageName: item.imageName,
+                        imageTag: item.imageTag,
+                        discount: item.discount,
+                        offerPrice: item.offerPrice,
+                        prize: item.prize,
+                        title: item.title
+                    }
+                    items.push(data);
+                });
+            }
+        }
+        if (fltrMaterial) {
+            items = [];
+            var fltrMaterialitem = [];
+            for (var i = 0; i < fltrMaterial.length; i++) {
+                if (allDisplFltr && allDisplFltr.length != 0) {
+                    fltrMaterialitem = allDisplFltr.filter((fltr) => fltr.material == fltrMaterial[i]);
+                }
+                else if (allFltrItems && allFltrItems.length != 0) {
+                    fltrMaterialitem = allFltrItems.filter((fltr) => fltr.material == fltrMaterial[i]);
+                }
+                else
+                    fltrMaterialitem = itemsList.filter((fltr) => fltr.material == fltrMaterial[i]);
+
+                fltrMaterialitem.forEach(item => {
+                    allMaterialFltr.push(item);
+                    var data = {};
+                    data = {
+                        type: item.type,
+                        _id: item._id,
+                        imageName: item.imageName,
+                        imageTag: item.imageTag,
+                        discount: item.discount,
+                        offerPrice: item.offerPrice,
+                        prize: item.prize,
+                        title: item.title
+                    }
+                    items.push(data);
+                });
+            }
         }
         res.json(items)
     }
@@ -126,7 +194,6 @@ router.post("/category", function (req, res, next) {
 router.post("/size", function (req, res, next) {
     // console.log(req.body.brands.length);
     items = itemsList.filter((fltr) => fltr.size == req.body.size);
-    console.log(items);
     res.render('items-list.html', {
         data: items,
         brands: fltrBrands,
