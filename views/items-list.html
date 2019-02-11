@@ -90,7 +90,7 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <form action="/items/size" method="POST">
+                                    <a href="/brand" class="filter">
                                         <% size.forEach(function(sizes){ %>
                                         <label class="form-check">
                                             <input class="form-check-input" type="checkbox" value="<%= sizes %>" name="size">
@@ -99,8 +99,7 @@
                                             </span>
                                         </label>
                                         <% }) %>
-                                        <button type="submit">size</button>
-                                    </form>
+                                    </a>
 
                                 </div>
                             </div>
@@ -134,17 +133,16 @@
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <form action="/items/category" method="POST">
+                                    <a href="/brand" class="filter">
                                         <% category.forEach(function(cat){ %>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="cat" value="<%= cat %>">
+                                            <input class="form-check-input" type="checkbox" name="category" value="<%= cat %>">
                                             <span class="form-check-label">
                                                 <%= cat %>
                                             </span>
                                         </label>
                                         <% }) %>
-                                        <button type="submit"> category</button>
-                                    </form>
+                                    </a>
 
                                 </div>
                             </div>
@@ -215,6 +213,8 @@
                 var brand = [];
                 var displayType = [];
                 var material = [];
+                var size = [];
+                var category = []
                 var link = 'items' + $(this).attr("href");
 
                 $.each($("input[name='brand']:checked"), function () {
@@ -229,16 +229,28 @@
                     material.push($(this).val());
                 })
 
-                if (brand.length > 0 || displayType.length > 0 || material.length > 0) {
+                $.each($("input[name='size']:checked"), function () {
+                    size.push($(this).val());
+                })
+
+                $.each($("input[name='category']:checked"), function () {
+                    category.push($(this).val());
+                })
+
+                if (brand.length > 0 || displayType.length > 0 ||
+                    material.length > 0 || size.length > 0 || category.length > 0) {
+
                     var data = {
                         brand: brand,
                         displayType: displayType,
-                        material: material
+                        material: material,
+                        size: size,
+                        category: category
                     }
                     postAjax(link, filterSuccessHandler, failurehandler, data);
 
                 }
-                if (brand.length == 0 && displayType.length == 0 && material.length == 0) {
+                if (brand.length == 0 && displayType.length == 0 && material.length == 0 && size.length == 0 && category == 0) {
                     var data = {
                         brand: null,
                         displayType: null,

@@ -65,7 +65,10 @@ router.post("/items/brand", function (req, res, next) {
     fltrBrands = req.body.brand;
     fltrDisplayType = req.body.displayType;
     fltrMaterial = req.body.material;
-    if (!fltrBrands && !fltrDisplayType && !fltrMaterial) {
+    fltrSize = req.body.size;
+    fltrCategory = req.body.category;
+    if ((selectedItemType == "watch" && !fltrBrands && !fltrDisplayType && !fltrMaterial) ||
+        (selectedItemType == "dresses" && !fltrBrands && !fltrDisplayType && !fltrMaterial && !fltrSize && !fltrCategory)) {
         product.find({ "type": selectedItemType }, function (err, allItems, next) {
             if (err) {
                 res.send(err);
@@ -94,6 +97,8 @@ router.post("/items/brand", function (req, res, next) {
         var allFltrItems = [];
         var allDisplFltr = [];
         var allMaterialFltr = [];
+        var allSizeFltr = [];
+
         if (fltrBrands) {
             allFltrItems = [];
             for (var i = 0; i < fltrBrands.length; i++) {
@@ -173,37 +178,72 @@ router.post("/items/brand", function (req, res, next) {
                 });
             }
         }
+        if (selectedItemType == "dresses") {
+            if (fltrSize) {
+                items = [];
+                var fltrSizeitem = [];
+                for (var i = 0; i < fltrSize.length; i++) {
+                    if (allMaterialFltr && allMaterialFltr.length != 0) {
+                        fltrSizeitem = allMaterialFltr.filter((fltr) => fltr.size == fltrSize[i]);
+                    }
+                    else if (allFltrItems && allFltrItems.length != 0) {
+                        fltrSizeitem = allFltrItems.filter((fltr) => fltr.size == fltrSize[i]);
+                    }
+                    else
+                        fltrSizeitem = itemsList.filter((fltr) => fltr.size == fltrSize[i]);
+
+                    fltrSizeitem.forEach(item => {
+                        allSizeFltr.push(item);
+                        var data = {};
+                        data = {
+                            type: item.type,
+                            _id: item._id,
+                            imageName: item.imageName,
+                            imageTag: item.imageTag,
+                            discount: item.discount,
+                            offerPrice: item.offerPrice,
+                            prize: item.prize,
+                            title: item.title
+                        }
+                        items.push(data);
+                    });
+                }
+            }
+            if (fltrCategory) {
+                items = [];
+                var fltrCategoryitem = [];
+                for (var i = 0; i < fltrCategory.length; i++) {
+                    if (allSizeFltr && allSizeFltr.length != 0) {
+                        fltrCategoryitem = allSizeFltr.filter((fltr) => fltr.category == fltrCategory[i]);
+                    }
+                    else if (allMaterialFltr && allMaterialFltr.length != 0) {
+                        fltrCategoryitem = allMaterialFltr.filter((fltr) => fltr.category == fltrCategory[i]);
+                    }
+                    else if (allFltrItems && allFltrItems.length != 0) {
+                        fltrCategoryitem = allFltrItems.filter((fltr) => fltr.category == fltrCategory[i]);
+                    }
+                    else
+                        fltrCategoryitem = itemsList.filter((fltr) => fltr.category == fltrCategory[i]);
+
+                    fltrCategoryitem.forEach(item => {
+                        var data = {};
+                        data = {
+                            type: item.type,
+                            _id: item._id,
+                            imageName: item.imageName,
+                            imageTag: item.imageTag,
+                            discount: item.discount,
+                            offerPrice: item.offerPrice,
+                            prize: item.prize,
+                            title: item.title
+                        }
+                        items.push(data);
+                    });
+                }
+            }
+        }
         res.json(items)
     }
 })
-
-router.post("/category", function (req, res, next) {
-    // console.log(req.body.brands.length);
-    items = itemsList.filter((fltr) => fltr.category == req.body.cat);
-    res.json('items-list.html', {
-        data: items,
-        brands: fltrBrands,
-        materials: fltrMaterial,
-        displayTypes: fltrDisplayType,
-        category: fltrCategory,
-        itemType: fltrItemType,
-        size: fltrSize
-    });
-})
-
-router.post("/size", function (req, res, next) {
-    // console.log(req.body.brands.length);
-    items = itemsList.filter((fltr) => fltr.size == req.body.size);
-    res.render('items-list.html', {
-        data: items,
-        brands: fltrBrands,
-        materials: fltrMaterial,
-        displayTypes: fltrDisplayType,
-        category: fltrCategory,
-        itemType: fltrItemType,
-        size: fltrSize,
-    });
-})
-
 
 module.exports = router;
