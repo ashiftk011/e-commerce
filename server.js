@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/D2D", { useNewUrlParser: true });
 
 //set port
-let port = process.env.PORT;
+var port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
@@ -244,4 +244,6 @@ app.post("/purchase", function (req, res, next) {
     res.render("sucess-page.html");
 });
 
-app.listen(port);
+app.listen(port, function () {
+ console.log('server connencted to port :'+port);
+});
