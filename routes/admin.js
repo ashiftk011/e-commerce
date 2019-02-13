@@ -1,6 +1,7 @@
 var express = require('express');
 var multer = require('multer');
 var moongoose = require('mongoose');
+var customerDetails = require('../model/customerDetails');
 var product = require('../model/product');
 var lookupValue = require('../model/lookupValue');
 
@@ -41,17 +42,35 @@ router.post('/login', function (req, res, next) {
 });
 
 router.get('/dashboard', function (req, res, next) {
-    if (isAuthenticated)
-        res.render('admin/dashboard.html', { error: null, username: "", password: "" });
+    if (isAuthenticated) {
+        customerDetails.find({}, function (err, orders) {
+            res.render('admin/dashboard.html', { orders: orders });
+        });
+    }
     else
         res.redirect('/admin/accessdenied');
+});
+
+router.get('/orderdetails/:id',function(req, res, next) {
+    console.log("object Id :"+req.params.id);
+    var cartitems = [];
+    customerDetails.findById(req.params.id,function (err, order){
+        order.items.forEach(function(item){
+            console.log('id : '+item.id);
+            product.findById(item.id,function (err, doc){
+                cartitems.push(doc);
+                if(order.items.length == cartitems.length){
+                    res.render('admin/orderdetails.html', { order: order , items : cartitems });
+                }
+            });
+        });
+        
+    });
 });
 
 router.get('/products', function (req, res, next) {
     if (isAuthenticated) {
         product.find(function (err, products) {
-            console.log(products);
-            console.log('------------------------');
             res.render('admin/products.html', { products: products });
         });
     } else
@@ -77,7 +96,7 @@ router.get('/filters/:type', function (req, res, next) {
 });
 
 router.post('/additem', function (req, res, next) {
-    
+
     upload(req, res, function (err) {
         if (err) {
             return res.redirect('/admin/error');

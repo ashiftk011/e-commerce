@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <% include ../common/admin/leftmenu.html %>
+        <div class="row">
+        <h2>Order Details</h2>
+        <hr>
+        <div class="col-sm-8">
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <label>Order From</label>
+                <p>
+                    <%= order.firstName %>
+                    <%= order.lastName %>
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <label>Address</label>
+                <p>
+                    <%= order.address %>
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <label>Mobile Number</label>
+                <p>
+                    <%= order.mobile %>
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <label>Date of Order</label>
+                <p>
+                    <%= order.orderDate %>
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <label>Totale Price</label>
+                <p>
+                    <%= order.total %>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <% items.forEach(function(item){%>
+            <div class='col-sm-4'>
+                <div class='thumbnail'>
+                    <img src="/assets/images/<%= item.type %>/<%= item.imageName %>"><br>
+                    <p>
+                        <strong>
+                            <%= item.title  %> </strong><br>
+                        <strong>
+                            <%= item.prize  %> </strong>
+                    </p>
+                </div>
+            </div>
+            <% order.items.forEach(function(orderItem){
+            if(orderItem.id == item._id){%>
+            <p>Count :
+                <%=orderItem.count %>
+            </p>
+            <%}})%>
+
+            <%})%>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

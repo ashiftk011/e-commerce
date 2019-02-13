@@ -263,7 +263,8 @@
 
             //add to cart 
 
-            $(".cart").on("click", function (e) {
+
+            $('body').on("click", "a.cart", function (e) {
                 e.preventDefault();
                 $.ajax({
                     type: "get",
@@ -328,7 +329,7 @@
                                         <li><a href="/checkout/`
                         + $(this)[count]._id +
                         `?count=1" data-tip="Order Now"><i class="fa fa-plus"></i></a></li>
-                                        <li><a href="/addtocart/`+ $(this)[count].type + `/` + $(this)[count]._id + `class="cart" " data-tip="Add to Cart" class="addtocart"><i
+                                        <li><a href="/addtocart/`+ $(this)[count].type + `/` + $(this)[count]._id + `"class="cart" " data-tip="Add to Cart" class="addtocart"><i
                                                     class="fa fa-shopping-cart"></i></a></li>
                                     </ul><span class="product-new-label">`
                     var imgTag = $(this)[count].imageTag;
