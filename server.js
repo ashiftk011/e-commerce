@@ -20,7 +20,11 @@ mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/D2D", { useNewUrlParser: true });
 
 //set port
-var port = 3000;
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+//var port = 3000;
 
 global.cartItemsCount = 0;
 
@@ -240,6 +244,4 @@ app.post("/purchase", function (req, res, next) {
     res.render("sucess-page.html");
 });
 
-app.listen(port, function () {
-
-});
+app.listen(port);
