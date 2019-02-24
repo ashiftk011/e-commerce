@@ -15,64 +15,92 @@
     <div class="wrapper">
         <% include ../common/admin/leftmenu.html %>
         <div class="row">
-        <h2>Order Details</h2>
-        <hr>
-        <div class="col-sm-8">
-            <div class="col-sm-6 col-md-4 col-lg-4">
-                <label>Order From</label>
-                <p>
-                    <%= order.firstName %>
-                    <%= order.lastName %>
-                </p>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-                <label>Address</label>
-                <p>
-                    <%= order.address %>
-                </p>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-                <label>Mobile Number</label>
-                <p>
-                    <%= order.mobile %>
-                </p>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-                <label>Date of Order</label>
-                <p>
-                    <%= order.orderDate %>
-                </p>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-                <label>Totale Price</label>
-                <p>
-                    <%= order.total %>
-                </p>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <% items.forEach(function(item){%>
-            <div class='col-sm-4'>
-                <div class='thumbnail'>
-                    <img src="/assets/images/<%= item.type %>/<%= item.imageName %>"><br>
+            <h2>Order Details</h2>
+            <hr>
+            <div class="col-sm-8">
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <label>Order From</label>
                     <p>
-                        <strong>
-                            <%= item.title  %> </strong><br>
-                        <strong>
-                            <%= item.prize  %> </strong>
+                        <%= order.firstName %>
+                        <%= order.lastName %>
+                    </p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <label>Address</label>
+                    <p>
+                        <%= order.address %>
+                    </p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <label>Mobile Number</label>
+                    <p>
+                        <%= order.mobile %>
+                    </p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <label>Date of Order</label>
+                    <p>
+                        <%= order.orderDate %>
+                    </p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <label>Totale Price</label>
+                    <p>
+                        <%= order.total %>
                     </p>
                 </div>
             </div>
-            <% order.items.forEach(function(orderItem){
+            <div class="col-sm-4">
+                <% items.forEach(function(item){%>
+                <div class='col-sm-4'>
+                    <div class='thumbnail'>
+                        <img src="/assets/images/<%= item.type %>/<%= item.imageName %>"><br>
+                        <p>
+                            <strong>
+                                <%= item.title  %> </strong><br>
+                            <strong>
+                                <%= item.prize  %> </strong>
+                        </p>
+                    </div>
+                </div>
+                <% order.items.forEach(function(orderItem){
             if(orderItem.id == item._id){%>
-            <p>Count :
-                <%=orderItem.count %>
-            </p>
-            <%}})%>
+                <p>Count :
+                    <%=orderItem.count %>
+                </p>
+                <%}})%>
 
-            <%})%>
+                <%})%>
+            </div>
+            <% if(order.isDeliverd == 'N'){%>
+            <p id="alerttext"></p>
+            <a class="btn btn-primary pull-right" href="/admin/deliverd/<%= order._id %>" id="deliverd">Mark as Deliverd</a>
+            <%}%>
         </div>
     </div>
-    </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#deliverd').click(function (e) {
+            e.preventDefault();
+            var j_url = $(this).attr('href');
+            $.ajax({
+                type: "get",
+                url: j_url,
+                cache: false,
+                //data: params,
+                success: function (resp) {
+                    if (resp.status == 'success') {
+                        $('alerttext').text('Marked As Deliverd');
+                        $('#deliverd').hide();
+                    }
+                },
+                error: function (err) {
+                    $('alerttext').text('Cannot Update There was Some Error ..!');
+                }
+            });
+        });
+    });
+</script>
+
 </html>

@@ -43,7 +43,9 @@ router.post('/login', function (req, res, next) {
 
 router.get('/dashboard', function (req, res, next) {
     if (isAuthenticated) {
-        customerDetails.find({}, function (err, orders) {
+        console.log(":: ---- dashboard --- ::");
+        customerDetails.find({ "isDeliverd": "N" }, function (err, orders) {
+            console.log(orders);
             res.render('admin/dashboard.html', { orders: orders });
         });
     }
@@ -51,27 +53,27 @@ router.get('/dashboard', function (req, res, next) {
         res.redirect('/admin/accessdenied');
 });
 
-router.get('/orderdetails/:id',function(req, res, next) {
-    console.log("object Id :"+req.params.id);
+router.get('/orderdetails/:id', function (req, res, next) {
+    console.log("object Id :" + req.params.id);
     var cartitems = [];
-    customerDetails.findById(req.params.id,function (err, order){
-        order.items.forEach(function(item){
-            console.log('id : '+item.id);
-            product.findById(item.id,function (err, doc){
+    customerDetails.findById(req.params.id, function (err, order) {
+        order.items.forEach(function (item) {
+            console.log('id : ' + item.id);
+            product.findById(item.id, function (err, doc) {
                 cartitems.push(doc);
-                if(order.items.length == cartitems.length){
-                    res.render('admin/orderdetails.html', { order: order , items : cartitems });
+                if (order.items.length == cartitems.length) {
+                    res.render('admin/orderdetails.html', { order: order, items: cartitems });
                 }
             });
         });
-        
+
     });
 });
 
 router.get('/products', function (req, res, next) {
     if (isAuthenticated) {
         product.find(function (err, products) {
-            res.render('admin/products.html', { products: products });
+            res.render('admin/products.html', { status: null, products: products });
         });
     } else
         res.redirect('/admin/accessdenied');
@@ -88,7 +90,6 @@ router.get('/filters/:type', function (req, res, next) {
     if (isAuthenticated) {
         console.log(req.params.type);
         lookupValue.find({ "category": req.params.type }, function (err, datas) {
-            console.log(datas);
             res.render('admin/fragments/filters.html', { datas: datas });
         });
     } else
@@ -131,7 +132,9 @@ router.post('/additem', function (req, res, next) {
 router.get('/edititem/:id', function (req, res, next) {
     if (isAuthenticated) {
         product.findById(req.params.id, function (err, itemDetail) {
-            res.render('admin/editItem.html', { status: null, itemDetail: itemDetail });
+            lookupValue.find({ "category": itemDetail.type }, function (err, docs) {
+                res.render('admin/edititem.html', { status: null, itemDetail: itemDetail, filters: docs });
+            });
         });
     }
     else
@@ -140,8 +143,93 @@ router.get('/edititem/:id', function (req, res, next) {
 
 router.post('/edititem', function (req, res, next) {
     if (isAuthenticated) {
-        // TODO : update item details, check if image is changed
-        res.render('admin/editItem.html', { status: null, operationFlag: "U", itemDetail: null });
+        if (req.body.images == '') {
+            console.log("NO new Image");
+            product.findById(req.body.id, function (err, itemDetail) {
+                if (err) {
+                    product.findById(req.body.id, function (err, doc) {
+                        lookupValue.find({ "category": doc.type }, function (err, docs) {
+                            res.render('admin/edititem.html', { status: 'Error While Updating', itemDetail: doc, filters: docs });
+                        });
+                    });
+                } else {
+                    if (itemDetail != null) {
+                        itemDetail.title = req.body.productName;
+                        itemDetail.brand = req.body.brand;
+                        itemDetail.description = req.body.description;
+                        itemDetail.prize = req.body.price;
+                        itemDetail.gender = req.body.gender;
+                        itemDetail.isOnSale = req.body.isOnsale;
+                        itemDetail.isInStock = req.body.isInstock;
+                        itemDetail.discount = req.body.discount;
+                        itemDetail.offerPrice = req.body.offerprice;
+                        itemDetail.material = req.body.material;
+                        itemDetail.display = req.body.display;
+                        itemDetail.size = req.body.size;
+                        itemDetail.category = req.body.category;
+                        itemDetail.quantity = req.body.quantity;
+                        itemDetail.imageTag = req.body.imagetag;
+                        itemDetail.date = new Date();
+                    }
+                    itemDetail.save();
+                    product.find(function (err, products) {
+                        res.render('admin/products.html', { status: 'Record Update Successfully', products: products });
+                    });
+                }
+            });
+        } else {
+            console.log("upload new Image");
+            upload(req, res, function (err) {
+                console.log(req.body);
+                if (err) {
+                    product.findById(req.body.id, function (err, doc) {
+                        lookupValue.find({ "category": doc.type }, function (err, docs) {
+                            res.render('admin/edititem.html', { status: 'Error While Updating', itemDetail: doc, filters: docs });
+                        });
+                    });
+                } else {
+                    product.findById(req.body.id, function (err, itemDetail) {
+                        if (itemDetail != null) {
+                            itemDetail.title = req.body.productName;
+                            itemDetail.brand = req.body.brand;
+                            itemDetail.description = req.body.description;
+                            itemDetail.prize = req.body.price;
+                            itemDetail.gender = req.body.gender;
+                            itemDetail.isOnSale = req.body.isOnsale;
+                            itemDetail.isInStock = req.body.isInstock;
+                            itemDetail.discount = req.body.discount;
+                            itemDetail.offerPrice = req.body.offerprice;
+                            itemDetail.material = req.body.material;
+                            itemDetail.display = req.body.display;
+                            itemDetail.size = req.body.size;
+                            itemDetail.category = req.body.category;
+                            itemDetail.quantity = req.body.quantity;
+                            itemDetail.imageTag = req.body.imagetag;
+                            itemDetail.date = new Date();
+                        }
+                        itemDetail.save();
+                        product.find(function (err, products) {
+                            res.render('admin/products.html', { status: 'Record Update Successfully', products: products });
+                        });
+                    });
+                }
+            });
+        }
+    }
+    else
+        res.redirect('/admin/accessdenied');
+});
+
+router.get('/deleteitem/:id', function (req, res, next) {
+    if (isAuthenticated) {
+        product.deleteOne({ "_id": req.params.id }, function (err) {
+            if (err) {
+                return res.redirect('/admin/error');
+            }
+            product.find(function (err, products) {
+                res.render('admin/products.html', { status: 'Record Update Successfully', products: products });
+            });
+        });
     }
     else
         res.redirect('/admin/accessdenied');
@@ -221,11 +309,27 @@ router.post('/addfilter', function (req, res, next) {
 });
 
 router.get('/orders', function (req, res, next) {
-    if (isAuthenticated)
-        res.render('admin/orders.html');
+    if (isAuthenticated) {
+        console.log(":: ---- orders --- ::");
+        customerDetails.find({}, function (err, orders) {
+            console.log(orders);
+            res.render('admin/orders.html', { orders: orders });
+        });
+    }
     else
         res.redirect('/admin/accessdenied');
+});
 
+router.get('/deliverd/:id', function (req, res, next) {
+    if (isAuthenticated) {
+        customerDetails.findById(req.params.id, function (err, order) {
+            order.isDeliverd = 'Y'
+            order.save();
+            res.json({ status: 'success' });
+        });
+    }
+    else
+        res.redirect('/admin/accessdenied');
 });
 
 var uploadLocation = './assets/images/';

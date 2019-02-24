@@ -35,16 +35,13 @@
                             <br>
                         <%if(order.isDeliverd == 'N'){%>
                         <li class="active">
-                            <%}else{%>
-                        <li>
-                            <%}%>
                             <a href="/admin/orderdetails/<%= order._id %>">
                                 <p>You have an order from
                                     <%= order.firstName %>
                                 </p>
                             </a>
                         </li>
-                        <%})%>
+                        <%}})%>
                     </ul>
                 </div>
             </nav>
