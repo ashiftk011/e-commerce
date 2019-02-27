@@ -1,83 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/login.css">
-</head>
-
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
+    </head>
+    <style>
+            #filter-sidebar{
+                margin-top: 80px;
+                margin-left: -60px !important;
+                height: 100%;
+            }
+            .card-custom{
+                max-width: 200px;
+                min-width: 200px;
+            }
+            .product-grid .card-img a{
+                overflow: hidden;
+            }
+            .card-img img{
+                max-height: 200px;
+            }
+        </style>
 <body>
-    <div class="wrapper">
-        <% include ../common/admin/leftmenu.html %>
-        <div id="content">
-            <h2>Products</h2>
-            <hr><br>
-            <h4>Dresses</h4>
-            <div class='row'>
-                <% products.forEach(function(product){ %>
-                <%if(product.type=='dresses'){%>
-                <div class='col-sm-4'>
-                    <div class='thumbnail'>
-                        <img src="/assets/images/dresses/<%= product.imageName %>"><br>
-                        <p>
-                            <strong>
-                                <%= product.title  %> </strong><br>
-                            <strong>
-                                <%= product.prize  %> </strong>
-                        </p>
-                        <div class="clearfix"></div>
-                        <a class="btn btn-success pull-right" href='/admin/edititem/<%= product._id %>'>Edit</a>
-                        <a class="btn btn-success pull-right" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
-                    </div>
+    <% include ../common/admin/header.html %>
+    <div class="container-fluid">
+        <div id="row">
+            <% include ../common/admin/leftmenu.html %>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="row">
+                    <h3>Products</h3>
                 </div>
-                <%}
-                });%>
-            </div>
-            <h4>Watches</h4>
-            <div class='row'>
-                <% products.forEach(function(product){ 
-                    if(product.type=='watch'){%>
-                <div class='col-sm-4'>
-                    <div class='thumbnail'>
-                        <img src="/assets/images/watch/<%= product.imageName %>"><br>
-                        <p>
-                            <strong>
-                                <%= product.title  %> </strong><br>
-                            <strong>
-                                <%= product.prize  %> </strong>
-                        </p>
-                        <a class="btn btn-success pull-right" href='/admin/edititem/<%= product._id %>'>Edit</a>
-                        <a class="btn btn-success pull-right" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
-                    </div>
-                </div>
-                <%}
-                });%>
-            </div>
-            <h4>Watches</h4>
-            <div class='row'>
-                <% products.forEach(function(product){ 
-                        if(product.type=='perfume'){%>
-                <div class='col-sm-4'>
-                    <div class='thumbnail'>
-                        <img src="/assets/images/perfume/<%= product.imageName %>"><br>
-                        <p>
-                            <strong>
-                                <%= product.title  %> </strong><br>
-                            <strong>
-                                <%= product.prize  %> </strong>
-                        </p>
-                        <a class="btn btn-success pull-right" href='/admin/edititem/<%= product._id %>'>Edit</a>
-                        <a class="btn btn-success pull-right" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
-                    </div>
-                </div>
-                <%}
-                });%>
-            </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Dresses</h4>
+                        <div class="row justify-content-left" id="content">
+                            <% products.forEach(function(product){ %>
+                            <%if(product.type=='dresses'){%>
+                                <div class="card card-custom mx-2 mb-3">
+                                    <div class="product-grid">
+                                        <div class="card-img">
+                                            <img class="card-img-top" src="/assets/images/dresses/<%= product.imageName %>">
+                                        </div>
+                                        <div class="card-body">
+                                            <strong class="card-title">
+                                                <%= product.title  %> </strong><br>
+                                            <strong class="card-text">
+                                                <%= product.prize  %> </strong>
+                                            <a class="btn btn-success pull-right" href='/admin/edititem/<%= product._id %>'>Edit</a>
+                                            <a class="btn btn-success pull-right" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <%}
+                            });%>
+                        </div>
+                        <h4>Watches</h4>
+                        <div class="row justify-content-left" id="content">
+                            <% products.forEach(function(product){ 
+                                if(product.type=='watch'){%>
+                                    <div class="card card-custom mx-2 mb-3">
+                                            <div class="product-grid">
+                                                <div class="card-img">
+                                                    <img src="/assets/images/watch/<%= product.imageName %>"><br>
+                                                </div>
+                                                <div class="card-body">
+                                                    <strong class="card-title">
+                                                        <%= product.title  %> </strong><br>
+                                                    <strong class="card-text">
+                                                        <%= product.prize  %> </strong><br>
+                                                    <a class="btn btn-success" href='/admin/edititem/<%= product._id %>'>Edit</a>
+                                                    <a class="btn btn-danger" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
+                                                </div>
+                                            </div>
+                                    </div>
+                            <%}
+                            });%>
+                        </div>
+                        <h4>Perfumes</h4>
+                        <div class='row'>
+                            <% products.forEach(function(product){ 
+                                    if(product.type=='perfume'){%>
+                            <div class='col-sm-4'>
+                                <div class='thumbnail'>
+                                    <img src="/assets/images/perfume/<%= product.imageName %>"><br>
+                                    <p>
+                                        <strong>
+                                            <%= product.title  %> </strong><br>
+                                        <strong>
+                                            <%= product.prize  %> </strong>
+                                    </p>
+                                    <a class="btn btn-success pull-right" href='/admin/edititem/<%= product._id %>'>Edit</a>
+                                    <a class="btn btn-success pull-right" href='/admin/deleteitem/<%= product._id %>'>Delete</a>
+                                </div>
+                            </div>
+                            <%}
+                            });%>
+                        </div>
         </div>
     </div>
 </body>

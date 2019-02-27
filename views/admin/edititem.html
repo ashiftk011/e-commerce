@@ -1,167 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
+    </head>
 
 <body>
-    <div class="wrapper">
-        <% include ../common/admin/leftmenu.html %>
-        <div id="content">
-            <h2>Edit Item</h2>
-            <hr>
-            <% if(status){ 
-                if(status == 'success'){ %>
-            <div class="alert alert-success">
-                <p>Updated Successfully</p>
-            </div>
-            <% } else {%>
-            <div class="alert alert-danger">
-                <p class="text-center">
-                    <%= status %>
-                </p>
-            </div>
-            <%  }
-            } %>
+        <% include ../common/admin/header.html %>
+        <div class="container-fluid">
+            <div id="row">
+                <% include ../common/admin/leftmenu.html %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div class="row">
+                        <h2>Edit Item</h2>
+                    </div>
+                    <hr>
+                    <div class="row">
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <% if(status){ 
+                                            if(status == 'success'){ %>
+                                        <div class="alert alert-success">
+                                            <p>Updated Successfully</p>
+                                        </div>
+                                        <% } else {%>
+                                        <div class="alert alert-danger">
+                                            <p class="text-center">
+                                                <%= status %>
+                                            </p>
+                                        </div>
+                                        <%  }
+                                        } %>
 
-            <% if(itemDetail !=null){%>
-            <form action="/admin/edititem" id="editform" name="editform" method="post">
-                <input type="hidden" name="id" value="<%= itemDetail._id %>" />
-                <div class="row">
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Category</label><br>
-                        <select name="type" id="type" class="chosen-select" required>
-                            <option value="watch" <% if(itemDetail.type=='watch' ){%> selected
-                                <%}%>>watches</option>
-                            <option value="dresses" <% if(itemDetail.type=='dresses' ){%> selected
-                                <%}%>>dresses</option>
-                            <option value="perfume" <% if(itemDetail.type=='perfume' ){%> selected
-                                <%}%>>perfume</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Name</label><br>
-                        <input type="text" name="productName" value="<%= itemDetail.title %>" required />
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Code</label><br>
-                        <input type="text" name="productCode" value="<%= itemDetail.productCode %>" readonly required />
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Description</label><br>
-                        <input type="text" name="description" value="<%= itemDetail.description %>" required />
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Price</label><br>
-                        <input type="number" name="price" value="<%= itemDetail.prize %>" required />
-                    </div>
-                    <div id="filters">
-                        <% filters.forEach(function(data){ %>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Select
-                                <%=data.type %></label><br>
-                            <select name="<%=data.type %>" class="chosen-select" required>
-                                <%data.values.forEach(function(value){%>
-                                <%if(data.type == "brand"){%>
-                                    <option value="<%=value%>" <% if(value == itemDetail.brand){%> selected<%}%>> <%=value%> </option>
-                                <%}else if(data.type == 'material'){%>
-                                    <option value="<%=value%>" <% if(value == itemDetail.material){%> selected<%}%> > <%=value%> </option>
-                                <%}else if(data.type == 'display'){%>
-                                    <option value="<%=value%>" <% if(value == itemDetail.display){%> selected<%}%>> <%=value%> </option>
-                                <%}else if(data.type == "category"){%>
-                                    <option value="<%=value%>" <% if(value == itemDetail.category){%> selected<%}%>> <%=value%> </option>
-                                <%}else if(data.type == "size"){%>
-                                    <option value="<%=value%>" <% if(value == itemDetail.size){%> selected<%}%>> <%=value%> </option>
-                                <% }})%>
-                            </select>
+                                    <% if(itemDetail !=null){%>
+                                    <form action="/admin/edititem" id="editform" name="editform" method="post">
+                                        <input type="hidden" name="id" value="<%= itemDetail._id %>" />
+                                        <div class="row">
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Product Category</label><br>
+                                                <select name="type" id="type" class="form-control"  required>
+                                                    <option value="watch" <% if(itemDetail.type=='watch' ){%> selected
+                                                        <%}%>>watches</option>
+                                                    <option value="dresses" <% if(itemDetail.type=='dresses' ){%> selected
+                                                        <%}%>>dresses</option>
+                                                    <option value="perfume" <% if(itemDetail.type=='perfume' ){%> selected
+                                                        <%}%>>perfume</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Product Name</label><br>
+                                                <input type="text" class="form-control" name="productName" value="<%= itemDetail.title %>" required />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Product Code</label><br>
+                                                <input type="text" class="form-control" name="productCode" value="<%= itemDetail.productCode %>" readonly required />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Description</label><br>
+                                                <input type="text" class="form-control" name="description" value="<%= itemDetail.description %>" required />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Price</label><br>
+                                                <input type="number" class="form-control" name="price" value="<%= itemDetail.prize %>" required />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Gender</label><br>
+                                                <select class="form-control" name="gender" id="gender">
+                                                    <option value="M" <% if(itemDetail.gender=='M' ){ %> selected
+                                                        <%}%>>Men</option>
+                                                    <option value="F" <% if(itemDetail.gender=='F' ){ %> selected
+                                                        <%}%>>Women</option>
+                                                    <option value="G" <% if(itemDetail.gender=='G' ){ %> selected
+                                                        <%}%>>Girl</option>
+                                                    <option value="B" <% if(itemDetail.gender=='B' ){ %> selected
+                                                        <%}%>>Boy</option>
+                                                </select>
+                                            </div>
+                                            <div id="filters" class="col-md-12 form-group mb-6">
+                                                <div class="row">
+                                                <% filters.forEach(function(data){ %>
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label>Select
+                                                            <%=data.type %></label><br>
+                                                        <select name="<%=data.type %>" class="form-control" required>
+                                                            <%data.values.forEach(function(value){%>
+                                                            <%if(data.type == "brand"){%>
+                                                                <option value="<%=value%>" <% if(value == itemDetail.brand){%> selected<%}%>> <%=value%> </option>
+                                                            <%}else if(data.type == 'material'){%>
+                                                                <option value="<%=value%>" <% if(value == itemDetail.material){%> selected<%}%> > <%=value%> </option>
+                                                            <%}else if(data.type == 'display'){%>
+                                                                <option value="<%=value%>" <% if(value == itemDetail.display){%> selected<%}%>> <%=value%> </option>
+                                                            <%}else if(data.type == "category"){%>
+                                                                <option value="<%=value%>" <% if(value == itemDetail.category){%> selected<%}%>> <%=value%> </option>
+                                                            <%}else if(data.type == "size"){%>
+                                                                <option value="<%=value%>" <% if(value == itemDetail.size){%> selected<%}%>> <%=value%> </option>
+                                                            <% }})%>
+                                                        </select>
+                                                    </div>
+                                                <% })%>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Offer</label><br>
+                                                <div class="custom-control custom-radio">
+                                                    <% if(itemDetail.isOnSale == "Y"){%>
+                                                        <div>
+                                                            <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale1" value="N" />
+                                                            <label class="custom-control-label" for="isOnsale1">Disable</label>
+                                                        </div>
+                                                        <div>
+                                                            <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale2" value="Y" checked/>
+                                                            <label class="custom-control-label" for="isOnsale2">Enable</label>
+                                                        </div>
+                                                    <% } else {%>
+                                                        <div>
+                                                            <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale1" value="N" checked/>
+                                                            <label class="custom-control-label" for="isOnsale1">Disable</label>
+                                                        </div>
+                                                        <div>
+                                                            <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale2" value="Y" />
+                                                            <label class="custom-control-label" for="isOnsale2">Enable</label>
+                                                        </div>
+                                                    <% }%>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 form-group mb-6" id="offerdetails" <% if(itemDetail.isOnSale !="Y" ){ %> style="display:none;"
+                                                <% } %> >
+                                                <div class="row">
+                                                    <div class="col-md-6 form-group mb-3" >
+                                                        <label>Discount Percentage</label><br>
+                                                        <input type="number" class="form-control" name="discount" id="discount" value="<%= itemDetail.discount %>" />
+                                                    </div>
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label>Price After Discount</label><br>
+                                                        <input type="number" class="form-control" name="offerprice" id="offerprice" value="<%= itemDetail.discount %>" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Stock Details</label><br>
+                                                <div class="custom-control custom-radio">
+                                                    <% if(itemDetail.isInstock =='Y'){ %>
+                                                        <div>
+                                                            <input type="radio" name="isInstock" class="custom-control-input" id="isInstock1" value="Y" checked/>
+                                                            <label class="custom-control-label" for="isInstock1">In Stock</label>
+                                                        </div>
+                                                        <div>
+                                                            <input type="radio" name="isInstock" class="custom-control-input" id="isInstock2" value="N" />
+                                                            <label class="custom-control-label" for="isInstock2">Out Of Stock</label>
+                                                        </div>
+                                                    <%} else {%>
+                                                        <div>
+                                                            <input type="radio" name="isInstock" class="custom-control-input" id="isInstock1" value="Y" />
+                                                            <label class="custom-control-label" for="isInstock1">In Stock</label>
+                                                        </div>
+                                                        <div>
+                                                            <input type="radio" name="isInstock" class="custom-control-input" id="isInstock2" value="N" checked/>
+                                                            <label class="custom-control-label" for="isInstock2">Out Of Stock</label>
+                                                        </div>
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="imagetag" id="imagetag" value="<%= itemDetail.imageTag %>" />
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Select Image Tag</label><br>
+                                                <select class="form-control" name="tags" id="tags">
+                                                    <% if(itemDetail.imageTag !='SALE' && itemDetail.imageTag !='BEST SELLER' && itemDetail.imageTag !='NEW ARRIVALS'){ %>
+                                                    <option>None</option>
+                                                    <%}%>
+                                                    <option value="SALE" <% if(itemDetail.imageTag=='SALE' ){ %> selected
+                                                        <%}%> >Sale</option>
+                                                    <option value="BEST SELLER" <% if(itemDetail.imageTag=='BEST SELLER' ){ %> selected
+                                                        <%}%> >Best Seller</option>
+                                                    <option value="NEW ARRIVALS" <% if(itemDetail.imageTag=='NEW ARRIVALS' ){ %> selected
+                                                        <%}%> >New Arrival</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label>Upload Image</label><br>
+                                                <input class="form-control" type="file" name="images" id="images" single />
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <input class="btn btn-primary" type="submit" name="submit" id="btnSubmit" value="Upload" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <% } %>
+                                </div>
+                            </div>
                         </div>
-                        <% })%>
                     </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Offer</label><br>
-                        <div class="btn btn-group">
-                            <% if(itemDetail.isOnSale == "Y"){%>
-                            <label><input type="radio" name="isOnsale" value="N" />Disable</label>
-                            <label><input type="radio" name="isOnsale" value="Y" checked />Enable</label><br>
-                            <% } else {%>
-                            <label><input type="radio" name="isOnsale" value="N" checked />Disable</label>
-                            <label><input type="radio" name="isOnsale" value="Y" />Enable</label><br>
-                            <% }%>
-                        </div>
-                    </div>
-                    <div id="offerdetails" <% if(itemDetail.isOnSale !="Y" ){ %> style="display:none;"
-                        <% } %> >
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Discount Percentage</label><br>
-                            <input type="number" name="discount" id="discount" value="<%= itemDetail.discount %>" />
-                        </div>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                            <label>Price After Discount</label><br>
-                            <input type="number" name="offerprice" id="offerprice" value="<%= itemDetail.discount %>"
-                                readonly />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                    <label>Gender</label><br>
-                    <select name="gender" id="gender">
-                        <option value="M" <% if(itemDetail.gender=='M' ){ %> selected
-                            <%}%>>Men</option>
-                        <option value="F" <% if(itemDetail.gender=='F' ){ %> selected
-                            <%}%>>Women</option>
-                        <option value="G" <% if(itemDetail.gender=='G' ){ %> selected
-                            <%}%>>Girl</option>
-                        <option value="B" <% if(itemDetail.gender=='B' ){ %> selected
-                            <%}%>>Boy</option>
-                    </select>
-                </div>
-                <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                    <label>Stock Details</label><br>
-                    <div class="btn btn-group">
-                        <% if(itemDetail.isInstock =='Y'){ %>
-                        <label><input type="radio" name="isInstock" value="Y" checked />In Stock</label>
-                        <label><input type="radio" name="isInstock" value="N" />Out Of Stock</label><br>
-                        <%} else {%>
-                        <label><input type="radio" name="isInstock" value="Y" />In Stock</label>
-                        <label><input type="radio" name="isInstock" value="N" checked />Out Of Stock</label><br>
-                        <%}%>
-                    </div>
-                </div>
-                <input type="hidden" name="imagetag" id="imagetag" value="<%= itemDetail.imageTag %>" />
-                <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                    <label>Select Image Tag</label><br>
-                    <select name="tags" id="tags">
-                        <% if(itemDetail.imageTag !='SALE' && itemDetail.imageTag !='BEST SELLER' && itemDetail.imageTag !='NEW ARRIVALS'){ %>
-                        <option>None</option>
-                        <%}%>
-                        <option value="SALE" <% if(itemDetail.imageTag=='SALE' ){ %> selected
-                            <%}%> >Sale</option>
-                        <option value="BEST SELLER" <% if(itemDetail.imageTag=='BEST SELLER' ){ %> selected
-                            <%}%> >Best Seller</option>
-                        <option value="NEW ARRIVALS" <% if(itemDetail.imageTag=='NEW ARRIVALS' ){ %> selected
-                            <%}%> >New Arrival</option>
-                    </select>
-                </div>
-                <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                    <label>Upload Image</label><br>
-                    <input type="file" name="images" id="images" single />
-                </div>
-                <div class="row">
-                    <div class="col-xs-9 col-sm-8 col-lg-12">
-                        <input type="submit" name="submit" id="btnSubmit" value="Upload" />
-                    </div>
-                </div>
-            </form>
-            <% } %>
+                </main>
+            </div>
         </div>
-    </div>
 </body>
 <script type="text/javascript">
     $(document).ready(function () {

@@ -3,112 +3,135 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../../assets/css/login.css">
     </head>
 <body>
-    <div class="wrapper">
-        <% include ../common/admin/leftmenu.html %>
-        <div id="content">
-            <h2>Add Item</h2>
-            <hr>
-            <% if(status){ 
-                if(status == 'success'){ %>
-                    <div class="alert alert-success">
-                        <p>Uploaded Successfully</p>
-                    </div>
-            <% } else {%>
-                <div class="alert alert-danger">
-                    <p class="text-center"> <%= status %> </p>
-                </div>
-            <%  }
-            } %>
-            
-            <form enctype="multipart/form-data" action="/admin/additem" method="post">
+    <% include ../common/admin/header.html %>
+    <div class="container-fluid">
+        <div id="row">
+            <% include ../common/admin/leftmenu.html %>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="row">
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Category</label><br>
-                        <select name="type" id="type" class="chosen-select" required>
-                            <option>Select Product Category</option>
-                            <option value="watch">watches</option>
-                            <option value="dresses">dresses</option>
-                            <option value="perfume">perfume</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Name</label><br>
-                        <input type="text" name="productName" required/>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Product Code</label><br>
-                        <input type="text" name="productCode" required/>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Description</label><br>
-                        <input type="text" name="description" required/>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Price</label><br>
-                        <input type="number" name="price" required />
-                    </div>
-                    <div id="filters"></div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Offer</label><br>
-                        <div class="btn btn-group">
-                            <label><input type="radio" name="isOnsale"  value="N" />Disable</label>
-                            <label><input type="radio" name="isOnsale"  value="Y" checked/>Enable</label><br>
-                        </div>
-                    </div>
-                    <div id="offerdetails">
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group" >
-                            <label>Discount Percentage</label><br>
-                            <input type="number" name="discount" id="discount" required/>
-                        </div>
-                        <div class="col-xs-9 col-sm-8 col-lg-12 form-group" >
-                            <label>Price After Discount</label><br>
-                            <input type="number" name="offerprice" id="offerprice" readonly />
-                        </div>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Gender</label><br>
-                        <select name="gender" id="gender" >
-                            <option value="M">Men</option>
-                            <option value="F">Women</option>
-                            <option value="G">Girl</option>
-                            <option value="B">Boy</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Stock Details</label><br>
-                        <div class="btn btn-group">
-                            <label><input type="radio" name="isInstock"  value="Y" checked/>In Stock</label>
-                            <label><input type="radio" name="isInstock"  value="N" />Out Of Stock</label><br>
-                        </div>
-                    </div>
-                    <input type="hidden" name="imagetag" id="imagetag" />
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Select Image Tag</label><br>
-                        <select name="tags" id="tags">
-                            <option>None</option>
-                            <option value="SALE">Sale</option>
-                            <option value="BEST SELLER">Best Seller</option>
-                            <option value="NEW ARRIVALS">New Arrival</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
-                        <label>Upload Image</label><br>
-                        <input type="file" name="images" single required/>
-                    </div>
+                    <h3>Add Product</h3>
                 </div>
+                <hr>
                 <div class="row">
-                    <div class="col-xs-9 col-sm-8 col-lg-12">
-                            <input type="submit" name="submit" id="btnSubmit" value="Upload" /> 
-                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                    <% if(status){ 
+                                        if(status == 'success'){ %>
+                                            <div class="alert alert-success">
+                                                <p>Uploaded Successfully</p>
+                                            </div>
+                                    <% } else {%>
+                                        <div class="alert alert-danger">
+                                            <p class="text-center"> <%= status %> </p>
+                                        </div>
+                                    <%  }
+                                    } %>
+                                <form enctype="multipart/form-data" action="/admin/additem" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Product Category</label><br>
+                                            <select class="form-control" name="type" id="type" class="chosen-select" required>
+                                                <option>Select Product Category</option>
+                                                <option value="watch">watches</option>
+                                                <option value="dresses">dresses</option>
+                                                <option value="perfume">perfume</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Product Name</label><br>
+                                            <input type="text" class="form-control" name="productName" required/>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Product Code</label><br>
+                                            <input type="text" class="form-control" name="productCode" required/>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Description</label><br>
+                                            <input type="text" class="form-control" name="description" required/>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Price</label><br>
+                                            <input type="number" class="form-control" name="price" required />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Gender</label><br>
+                                            <select class="form-control" name="gender" id="gender" >
+                                                <option value="M">Men</option>
+                                                <option value="F">Women</option>
+                                                <option value="G">Girl</option>
+                                                <option value="B">Boy</option>
+                                            </select>
+                                        </div>
+                                        <div id="filters" class="col-md-12 form-group mb-6"></div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Offer</label><br>
+                                            <div class="custom-control custom-radio">
+                                                <div>
+                                                    <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale1" value="N" />
+                                                    <label class="custom-control-label" for="isOnsale1">Disable</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" class="custom-control-input" name="isOnsale" id="isOnsale2" value="Y" checked/>
+                                                    <label class="custom-control-label" for="isOnsale2">Enable</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 form-group mb-6" id="offerdetails">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group mb-3" >
+                                                    <label>Discount Percentage</label><br>
+                                                    <input type="number" class="form-control" name="discount" id="discount" required/>
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3" >
+                                                    <label>Price After Discount</label><br>
+                                                    <input type="number" class="form-control" name="offerprice" id="offerprice" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Stock Details</label><br>
+                                            <div class="custom-control custom-radio">
+                                                <div>
+                                                    <input type="radio" name="isInstock" class="custom-control-input" id="isInstock1" value="Y" checked/>
+                                                    <label class="custom-control-label" for="isInstock1">In Stock</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="isInstock" class="custom-control-input" id="isInstock2" value="N" />
+                                                    <label class="custom-control-label" for="isInstock2">Out Of Stock</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="imagetag" id="imagetag" />
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Select Image Tag</label><br>
+                                            <select class="form-control" name="tags" id="tags">
+                                                <option>None</option>
+                                                <option value="SALE">Sale</option>
+                                                <option value="BEST SELLER">Best Seller</option>
+                                                <option value="NEW ARRIVALS">New Arrival</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label>Upload Image</label><br>
+                                            <input class="form-control" type="file" name="images" single required/>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <input class="btn btn-primary" type="submit" name="submit" id="btnSubmit" value="Upload" /> 
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>  
                 </div>
-            </form>
+            </main>
         </div>
     </div>
 </body>

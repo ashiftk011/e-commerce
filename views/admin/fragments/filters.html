@@ -1,11 +1,12 @@
-
+<div class="row">
 <% datas.forEach(function(data){ %>
-    <div class="col-xs-9 col-sm-8 col-lg-12 form-group">
+    <div class="col-md-6 form-group mb-3">
         <label>Select <%=data.type %></label><br>
-        <select name="<%=data.type %>" class="chosen-select" required>
+        <select name="<%=data.type %>" class="form-control" required>
             <%data.values.forEach(function(value){%>
                 <option value="<%=value%>"><%=value%></option>
             <%})%>
         </select>
     </div> 
 <% })%>
+</div>

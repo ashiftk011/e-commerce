@@ -1,26 +1,21 @@
-<nav id="sidebar">
-    <div class="sidebar-header">
-        <h3>ADMIN</h3>
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+        <li class="nav-item" id="dashboard">
+            <a class="nav-link active" href="/admin/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item" id="items">
+            <a class="nav-link active" href="/admin/products">All Products</a>
+        </li>
+        <li class="nav-item" id="additem">
+            <a class="nav-link active" href="/admin/additem">Add Product</a>
+        </li>
+        <li class="nav-item" id="orders">
+            <a class="nav-link active" href="/admin/orders">Orders</a>
+        </li>
+        <li class="nav-item" id="addfilter">
+            <a class="nav-link active" href="/admin/addfilter">Add Filter</a>
+        </li>
+    </ul>
     </div>
-    <ul class="list-unstyled components">
-        <li id="dashboard">
-            <a href="/admin/dashboard">Dashboard</a>
-        </li>
-        <li id="items">
-            <a href="/admin/products">All Products</a>
-        </li>
-        <li id="additem">
-            <a href="/admin/additem">Add Product</a>
-        </li>
-        <li id="orders">
-            <a href="/admin/orders">Orders</a>
-        </li>
-        <li id="addfilter">
-            <a href="/admin/addfilter">Add Filter</a>
-        </li>
-    </ul>
-
-    <ul class="list-unstyled CTAs">
-        <li><a href="/admin/logout" class="logout">Logout</a></li>
-    </ul>
 </nav>
